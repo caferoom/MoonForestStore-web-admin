@@ -33,7 +33,7 @@
         },
         methods: {
             getInfo() {
-                this.axios.get('index',).then((response) => {
+                this.axios.get('dashboard/index',).then((response) => {
                     console.log(response);
                     this.infoData = response.data.data;
                     let time = response.data.data.timestamp;
