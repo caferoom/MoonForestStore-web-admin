@@ -176,7 +176,7 @@
                 console.log('????');
             },
             getInfo() {
-                this.axios.get('dashboard/index',).then((response) => {
+                this.axios.get('overview/index',).then((response) => {
                     this.infoData = response.data.data;
                 })
             },
@@ -201,7 +201,7 @@
                 }
             },
             getMainInfo(index) {
-                this.axios.get('dashboard/main', {
+                this.axios.get('overview/main', {
                     params: {
                         pindex: index
                     }
