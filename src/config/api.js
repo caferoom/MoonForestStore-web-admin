@@ -1,4 +1,5 @@
-const rootUrl = 'http://127.0.0.1:8360/admin/';
+// const rootUrl = 'http://127.0.0.1:8360/admin/';
+const rootUrl = "http://localhost:3000/"
 
 const api = {
     rootUrl : rootUrl,

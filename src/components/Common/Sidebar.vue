@@ -107,9 +107,9 @@ export default {
       });
     },
     checkLogin() {
-      this.axios.get("index/checkLogin").then((response) => {
+      this.axios.get("auth/checkLogin").then((response) => {
         console.log(response.data);
-        if (response.data.errno === 401) {
+        if (response.data.statusCode === 401) {
           localStorage.clear();
           this.$router.replace({ name: "login" });
         }

@@ -1,11 +1,8 @@
 <template>
   <div class="login">
     <div class="login-box">
-      <div class="logo">
-        <img src="static/images/loading.gif" />
-      </div>
       <div class="body">
-        <p class="tips">海风小店</p>
+        <p class="tips">admin</p>
         <el-form ref="form" :model="form" :rules="rules" label-position="top">
           <el-form-item label="" prop="username">
             <el-input v-model="form.username" placeholder="用户名"></el-input>
@@ -76,7 +73,7 @@ export default {
             let call = res.data;
             console.log(call);
             this.loading = false;
-            if (res.data.errno === 0) {
+            if (res.data.success) {
               console.log(res.data.data);
               localStorage.setItem("token", res.data.data.token);
               localStorage.setItem(
@@ -130,8 +127,6 @@ export default {
 <style>
 .login {
   align-items: center;
-  background: url("https://www.qile.club/img/back.jpg");
-  /* 以上为登录背景,可以自己更换成自己喜欢的 */
   background-size: 100%;
   background-repeat: no-repeat;
   display: flex;
