@@ -4,11 +4,11 @@
 			<el-breadcrumb class="breadcrumb" separator="/">
 				<el-breadcrumb-item>管理员</el-breadcrumb-item>
 			</el-breadcrumb>
-			<!-- <div class="operation-nav">
-				<router-link to="/dashboard/user">
-					<el-button type="primary" icon="plus">添加管理员</el-button>
-				</router-link>
-			</div> -->
+			<div class="operation-nav">
+				<!-- <router-link to="/dashboard/user"> -->
+					<el-button type="primary" icon="plus" @click="handleAdd()">添加管理员</el-button>
+				<!-- </router-link> -->
+			</div>
 		</div>
 		<div class="content-main">
 			<div class="form-table-box">
@@ -44,7 +44,9 @@ export default {
 		}
 	},
 	methods: {
-
+		handleAdd() {
+			this.$router.push({ name: 'admin_add', query: { id: 0 } })
+		},
 		handleRowEdit(index, row) {
 			this.$router.push({ name: 'admin_add', query: { id: row.id } })
 		},
@@ -57,7 +59,7 @@ export default {
 			}).then(() => {
 				this.axios.post('admin/deleAdmin', { id: row.id }).then((response) => {
 					console.log(response.data);
-					if (response.data.errno === 0) {
+					if (response.data.success) {
 						this.$message({
 							type: 'success',
 							message: '删除成功!'

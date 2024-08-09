@@ -438,7 +438,7 @@
             },
             getAllRegion() {
                 let that = this;
-                this.axios.get('order/getAllRegion').then((response) => {
+                this.axios.get('common/getAllRegion').then((response) => {
                     this.options = response.data.data;
                 })
             },

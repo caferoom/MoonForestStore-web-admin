@@ -91,19 +91,12 @@
                             user: user,
                             change:this.change,
                         }).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
                                 });
-                            }
-                            else if (response.data.errno === 400) {
-                                this.$message({
-                                    type: 'error',
-                                    message: response.data.errmsg
-                                });
-                            }
-                            else {
+                            } else {
                                 this.$message({
                                     type: 'error',
                                     message: '保存失败'
@@ -133,7 +126,7 @@
                         this.axios.post('admin/adminAdd', {
                             user: user,
                         }).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功'
@@ -157,9 +150,12 @@
                 this.axios.post('admin/adminDetail', {
                     id: that.infoForm.id
                 }).then((response) => {
-                    if (response.data.errno === 0) {
+                    console.log("response", response);
+                    if (response.data.success) {
                         let resInfo = response.data.data;
-                        that.infoForm = resInfo;
+                        that.infoForm.username = resInfo.username;
+                        that.infoForm.password = resInfo.password;
+
                     }
                 })
             }
@@ -168,7 +164,9 @@
         mounted() {
             this.infoForm.id = this.$route.query.id || 0;
             console.log(this.infoForm.id);
-            this.getInfo();
+            if (this.$route.query.id) {
+                this.getInfo();
+            }
         }
     }
 

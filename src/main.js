@@ -38,7 +38,20 @@ Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 Vue.use(VueAxios, Axios);
-
+// 添加响应拦截器
+Axios.interceptors.response.use(
+  function (response) {
+    // 对响应数据做些事
+    return response;
+  },
+  function (error) {
+    // 对响应错误做些事
+    if (error.response.status === 401) {
+      // 重定向登录页面
+      window.location.href = "/login#/login";
+    }
+  }
+);
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {

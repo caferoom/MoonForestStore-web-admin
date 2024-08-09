@@ -32,7 +32,7 @@
                         <div class="form-tip">那几个图标</div>
                     </el-form-item>
                     <el-form-item label="首页分类图片或文字">
-                        <el-radio-group v-model="infoForm.index_banner_img">
+                        <el-radio-group v-model="infoForm.indexBannerImg">
                             <el-radio :label="1">图片</el-radio>
                             <el-radio :label="0">文字</el-radio>
                         </el-radio-group>
@@ -69,8 +69,8 @@
             onSubmitInfo() {
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('admin/showsetStore', this.infoForm).then((response) => {
-                            if (response.data.errno === 0) {
+                        this.axios.post('store/showsetStore', this.infoForm).then((response) => {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
@@ -94,7 +94,7 @@
                 }
                 //加载优惠券详情
                 let that = this
-                this.axios.get('admin/showset').then((response) => {
+                this.axios.get('store/showset').then((response) => {
                     let resInfo = response.data.data;
                     that.infoForm = resInfo;
                 })

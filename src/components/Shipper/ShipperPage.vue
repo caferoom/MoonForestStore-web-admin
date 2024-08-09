@@ -56,7 +56,7 @@
                             <el-table-column prop="name" label="名字"></el-table-column>
                             <el-table-column prop="code" label="代号"></el-table-column>
                             <el-table-column prop="CustomerName" label="客户编号"></el-table-column>
-                            <el-table-column prop="MonthCode" label="月结账号"></el-table-column>
+                            <el-table-column prop="monthCode" label="月结账号"></el-table-column>
                             <el-table-column label="操作" width="170">
                                 <template slot-scope="scope">
                                     <el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">编辑
@@ -112,14 +112,14 @@
         methods: {
             getAllRegion() {
                 let that = this;
-                this.axios.get('order/getAllRegion').then((response) => {
+                this.axios.get('common/getAllRegion').then((response) => {
                     this.options = response.data.data;
                 })
             },
             changeStatus() {
                 this.infoForm.autoDelivery == true ? this.infoForm.autoDelivery = 1 : this.infoForm.autoDelivery = 0;
-                this.axios.post('admin/changeAutoStatus', {status:this.infoForm.autoDelivery}).then((response) => {
-                    if (response.data.errno === 0) {
+                this.axios.post('shipper/changeAutoStatus', {status:this.infoForm.autoDelivery}).then((response) => {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '更改成功'
@@ -144,8 +144,8 @@
                 this.infoForm.autoDelivery == true ? this.infoForm.autoDelivery = 1 : this.infoForm.autoDelivery = 0;
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('admin/storeShipperSettings', this.infoForm).then((response) => {
-                            if (response.data.errno === 0) {
+                        this.axios.post('shipper/storeShipperSettings', this.infoForm).then((response) => {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
@@ -165,22 +165,26 @@
                 });
             },
             getList() {
-                this.axios.get('shipper').then((response) => {
-                    this.infoForm = response.data.data.set;
-                    this.tableData = response.data.data.info;
-                    this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false
+                this.axios.get('shipper/usingDeliveryCompanyList').then((response) => {
+                    this.tableData = response.data.data;
+                })
+            },
+            getShippingAddress() {
+                this.axios.get('shipper/getShippingAddress').then((response) => {
+                    this.infoForm = response.data.data;
+                    this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false;
                     this.senderOptions.push(
                         this.infoForm.province_id,
                         this.infoForm.city_id,
                         this.infoForm.district_id
-                    )
-
+                    );
                 })
             }
         },
         components: {},
         mounted() {
             this.getList();
+            this.getShippingAddress(); 
             this.getAllRegion();
         }
     }
