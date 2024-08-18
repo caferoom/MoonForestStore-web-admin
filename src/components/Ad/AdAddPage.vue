@@ -176,7 +176,7 @@
             },
             relateGoodsClick() {
                 this.axios.post('ad/getallrelate', {id: this.infoForm.id}).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.chooseRelateGoods = response.data.data
                     }
                 });
@@ -234,25 +234,20 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('ad/store', this.infoForm).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
                                 });
                                 this.$router.go(-1);
-                            } else if (response.data.errno === 100) {
+                            } else {
+                                console.log("1111", response)
                                 this.$message({
                                     type: 'error',
-                                    message: '该商品已经有广告关联'
+                                    message: response.data.message.message,
                                 })
                             }
-                            else {
-                                this.$message({
-                                    type: 'error',
-                                    message: '保存失败'
-                                })
-                            }
-                        })
+                        });
                     } else {
                         return false;
                     }

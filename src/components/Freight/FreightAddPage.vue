@@ -356,7 +356,7 @@
                     })
                     return false;
                 }
-
+                console.log("*123", defa);
                 for (const ele of defa) {
                     if (ele.start == 0 || ele.add == 0 || ele.start_fee < 0 || ele.add_fee < 0) {
                         this.$message({
@@ -375,7 +375,6 @@
                 }
 
                 let data = this.tableData;
-
                 for (const ele of data) {
 
                     if (ele.start == 0 || ele.add == 0 || ele.start_fee < 0 || ele.add_fee < 0) {
@@ -395,12 +394,12 @@
                 }
 
                 let that = this;
-                this.axios.post('shipper/saveTable', {
+                this.axios.post('freight/saveTable', {
                     table: that.tableData,
                     defaultData: that.defaultData,
                     info: that.infoForm
                 }).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '保存成功'
@@ -470,12 +469,12 @@
 
                 let that = this;
 
-                this.axios.post('shipper/addTable', {
+                this.axios.post('freight/addTable', {
                     table: that.tableData,
                     defaultData: that.defaultData,
                     info: that.infoForm
                 }).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         that.$message({
                             type: 'success',
                             message: '添加成功'
@@ -532,8 +531,8 @@
             },
             getAllAreaData() {
                 let that = this;
-                this.axios.post('shipper/getareadata').then((response) => {
-                    if (response.data.errno === 0) {
+                this.axios.post('freight/getareadata').then((response) => {
+                    if (response.data.success) {
                         that.areaData = response.data.data;
                         // console.log(that.areaData);
                         // let otherArea =
@@ -587,6 +586,7 @@
                 this.axios.post('shipper/freightdetail', {
                     id: that.infoForm.id
                 }).then((response) => {
+                    console.log("213",response);
                     that.infoForm = response.data.data.freight;
                     that.tableData = response.data.data.data;
                     // console.log(this.tableData);
@@ -600,9 +600,10 @@
                 }
                 //加载快递公司详情
                 let that = this
-                this.axios.post('shipper/freightdetail', {
+                this.axios.post('freight/freightdetail', {
                     id: that.infoForm.id
                 }).then((response) => {
+                    console.log("********************", response, response.data.data.freight, response.data.data.freight);
                     that.infoForm = response.data.data.freight;
                     that.tableData = response.data.data.data;
                     that.defaultData = response.data.data.defaultData;

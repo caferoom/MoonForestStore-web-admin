@@ -125,11 +125,11 @@
                             return false;
                         }
                         let that = this;
-                        this.axios.post('shipper/saveExceptArea', {
+                        this.axios.post('freight/saveExceptArea', {
                             table: that.tableData,
                             info: that.infoForm
                         }).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
@@ -160,11 +160,11 @@
                             return false;
                         }
                         let that = this;
-                        this.axios.post('shipper/addExceptArea', {
+                        this.axios.post('freight/addExceptArea', {
                             table: that.tableData,
                             info: that.infoForm
                         }).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功'
@@ -190,14 +190,13 @@
             },
             getAllAreaData() {
                 let that = this;
-                this.axios.post('shipper/getareadata').then((response) => {
-                    if (response.data.errno === 0) {
+                this.axios.post('freight/getareadata').then((response) => {
+                    if (response.data.success) {
                         that.areaData = response.data.data;
                     }
                 })
             },
             handleRowEdit(index, row) {
-
                 let nowArea = this.tableData[0].area;
                 this.selectedArea = nowArea.split(',').map(Number);
 
@@ -214,7 +213,8 @@
                 }
                 //加载快递公司详情
                 let that = this
-                this.axios.post('shipper/exceptAreaDetail', {
+                console.log("exceptAreaDetail");
+                this.axios.post('freight/exceptAreaDetail', {
                     id: that.infoForm.id
                 }).then((response) => {
                     // console.log(response.data.data);

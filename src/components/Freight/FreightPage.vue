@@ -61,9 +61,9 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.axios.post('shipper/destory', {id: row.id}).then((response) => {
+                    this.axios.post('freight/destory', {id: row.id}).then((response) => {
                         console.log(response.data)
-                        if (response.data.errno === 0) {
+                        if (response.data.success) {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
@@ -76,7 +76,7 @@
                 });
             },
             getList() {
-                this.axios.get('shipper/freight').then((response) => {
+                this.axios.get('freight/freight').then((response) => {
                     console.log(response);
                     this.tableData = response.data.data
                 })

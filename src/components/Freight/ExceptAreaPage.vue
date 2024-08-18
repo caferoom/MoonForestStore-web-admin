@@ -69,9 +69,9 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.axios.post('shipper/exceptAreaDelete', {id: row.id}).then((response) => {
+                    this.axios.post('freight/exceptAreaDelete', {id: row.id}).then((response) => {
                         console.log(response.data)
-                        if (response.data.errno === 0) {
+                        if (response.data.success) {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
@@ -83,7 +83,7 @@
             },
             getInfo() {
                 let that = this;
-                this.axios.get('shipper/exceptarea').then((response) => {
+                this.axios.get('freight/exceptArea').then((response) => {
                     that.tableData = response.data.data;
                 })
             }

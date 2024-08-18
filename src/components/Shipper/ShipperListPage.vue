@@ -75,7 +75,7 @@ export default {
 	},
 	methods: {
 		submitSort(index, row){
-		    this.axios.post('shipper/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {})
+		    this.axios.post('shipper/updateSort', { id: row.id, sort:row.sort_order }).then((response) => {})
 		},
         goBackPage() {
             this.$router.go(-1);
@@ -137,11 +137,18 @@ export default {
 		            id: para
 		        }
 		    }).then((response) => {
-				this.$message({
+				if (response.data.success) {
+					this.$message({
 					type: 'success',
 					message: '更新成功!'
+					});
+				} else {
+					this.$message({
+					type: 'falied',
+					message: '更新失败!'
 				});
-		    })
+			}
+		    });
 		},
 	},
 	components: {
