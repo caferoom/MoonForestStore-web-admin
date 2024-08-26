@@ -98,7 +98,7 @@ export default {
 
 				this.axios.post('user/destory', { id: row.id }).then((response) => {
 					console.log(response.data)
-					if (response.data.errno === 0) {
+					if (response.data.success) {
 						this.$message({
 							type: 'success',
 							message: '删除成功!'

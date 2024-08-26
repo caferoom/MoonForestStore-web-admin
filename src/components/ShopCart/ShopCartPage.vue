@@ -77,7 +77,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('shopcart', {
+			this.axios.get('user/shopcart', {
 				params: {
 					page: this.page,
 					name: this.filterForm.name

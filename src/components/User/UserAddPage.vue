@@ -237,7 +237,7 @@
             saveAddress() {
                 this.nowAddressData.addOptions = this.addOptions;
                 this.axios.post('user/saveaddress', this.nowAddressData).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
@@ -294,7 +294,7 @@
             },
             submitName(index, row) {
                 this.axios.post('user/updateName', {id: row.id, name: row.name}).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
@@ -309,7 +309,7 @@
             },
             submitMobile(index, row) {
                 this.axios.post('user/updateMobile', {id: row.id, mobile: row.mobile}).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
@@ -353,6 +353,7 @@
                         id: that.infoForm.id
                     }
                 }).then((response) => {
+                    console.log("rrrr", response)
                     let info = response.data.data;
                     this.dataInfo = info;
                 })
