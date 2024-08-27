@@ -105,7 +105,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('keywords', {
+			this.axios.get('cart/keywords', {
 				params: {
 					page: this.page,
 					name: this.filterForm.name
