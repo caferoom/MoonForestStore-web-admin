@@ -220,7 +220,7 @@
             },
             updateGoodsNumber(){
                 this.axios.post('goods/updateGoodsNumber').then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '同步成功2/2，完成'
