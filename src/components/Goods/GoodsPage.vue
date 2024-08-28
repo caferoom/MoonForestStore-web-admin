@@ -237,20 +237,21 @@
                     return false;
                 }
                 this.axios.post('goods/updatePrice', row).then((response) => {
-                    if (response.data.errno === 0) {
+                    if (response.data.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
                         });
                     }
-					else if (response.data.errno === 100) {
+					else {
+                        
 						this.$message({
 						    type: 'error',
-						    message: response.data.errmsg
+						    message: response.data.message.message
 						});
 					}
                 })
-
+               
             },
             checkSkuOnly(index,row){
                 console.log(index);
