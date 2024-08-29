@@ -264,16 +264,16 @@
                     return false;
                 }
                 this.axios.post('goods/checkSku', {info: row}).then((response) => {
-                    if (response.data.errno === 100) {
+                    if (response.data.success) {
                         this.$message({
-                            type: 'error',
-                            message: '该SKU已存在！'
+                            type: 'success',
+                            message: '该SKU可以用！'
                         })
                     }
                     else{
                         this.$message({
-                            type: 'success',
-                            message: '该SKU可以用！'
+                            type: 'error',
+                            message: '该SKU已存在！'
                         })
                     }
                 })
@@ -284,6 +284,7 @@
             test(){
                 console.log(this.tableData);
             },
+            // do not used and what's shot_name
             submitName(index, row){
                 this.axios.post('goods/updateShortName', { id: row.id,short_name:row.short_name }).then((response) => {
                     if (response.data.errno === 0) {

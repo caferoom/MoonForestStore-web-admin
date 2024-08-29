@@ -290,6 +290,7 @@ export const constantRoutes = [
         name: "keywords_add",
         component: () => import("@/components/Keywords/KeywordsAddPage"),
       },
+      // 看上去没有转跳进入的地方
       {
         path: "goodsgalleryedit",
         name: "goodsgalleryedit",
