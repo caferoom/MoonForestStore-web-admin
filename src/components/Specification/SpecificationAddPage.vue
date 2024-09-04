@@ -56,7 +56,7 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('specification/add', info).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功!'
@@ -83,7 +83,7 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('specification/update', info).then((response) => {
-                            if (response.data.errno === 0) {
+                            if (response.data.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功!'

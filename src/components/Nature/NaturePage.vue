@@ -74,10 +74,19 @@
                 </el-table>
                 <el-table v-if="pIndex == 1" :data="specData" style="width: 100%" border stripe>
                     <el-table-column prop="id" label="ID" width="100">
+                        <template slot-scope="scope">
+                            <div class="bg-gray">{{scope.row.id}}</div>
+                        </template>
                     </el-table-column>
                     <el-table-column prop="name" label="型号名">
+                        <template slot-scope="scope">
+                            <div class="bg-gray">{{scope.row.name}}</div>
+                        </template>
                     </el-table-column>
                     <el-table-column prop="sort_order" label="排序" width="200">
+                        <template slot-scope="scope">
+                            <div class="bg-gray">{{scope.row.sort_order}}</div>
+                        </template>
                     </el-table-column>
                     <el-table-column label="操作" width="160">
                         <template slot-scope="scope">
@@ -167,7 +176,7 @@
                 }).then(() => {
                     this.axios.post('specification/delete', {id: row.id}).then((response) => {
                         console.log(response.data)
-                        if (response.data.errno === 0) {
+                        if (response.data.success) {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
@@ -191,7 +200,7 @@
                 }).then(() => {
                     this.axios.post('category/destory', {id: row.id}).then((response) => {
                         console.log(response.data)
-                        if (response.data.errno === 0) {
+                        if (response.data.success) {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
@@ -210,6 +219,7 @@
                 });
             },
             getList() {
+                console.log(this.page);
                 this.axios.get('category', {
                     params: {
                         page: this.page,
@@ -221,6 +231,7 @@
             getSpecList() {
                 this.axios.get('specification').then((response) => {
                     this.specData = response.data.data
+                    console.log(response.data.data);
                 })
             }
         },

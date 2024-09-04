@@ -215,7 +215,7 @@ export default {
       this.$refs["infoForm"].validate((valid) => {
         if (valid) {
           this.axios.post("category/store", this.infoForm).then((response) => {
-            if (response.data.errno === 0) {
+            if (response.data.success) {
               this.$message({
                 type: "success",
                 message: "保存成功",

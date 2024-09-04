@@ -552,20 +552,26 @@ export default {
           formData.append("file", rst.file);
           formData.append("token", this.picData.token);
           formData.append("key", fileName);
-          this.$http.post(this.qiniuZone, formData, config).then((res) => {
-            this.handleUploadGallerySuccess(res.data);
-          });
+
+          this.axios.post(this.qiniuZone, formData, {
+            ...config,
+          }).then((res) => {
+            this.handleUploadGallerySuccess(res.data.data);
+          })
+          // this.$http.post(this.qiniuZone, formData, config).then((res) => {
+          //   console.log("111", typeof res.data, res.data);
+          //   this.handleUploadGallerySuccess(JSON.parse(res.data));
+          // });
         })
         .catch(function (err) {
           console.log(err);
         });
     },
     handleUploadGallerySuccess(res) {
-      let url = this.url;
-      let urlData = url + res.key;
+      const { fileName, fileSize, fileType, fileUrl } = res;
       let data = {
         id: 0,
-        url: urlData,
+        url: fileUrl,
         is_delete: 0,
       };
       this.gallery_list.push(data);
@@ -622,7 +628,7 @@ export default {
           id: id,
         })
         .then((response) => {
-          if (response.data.errno === 0) {
+          if (response.data.success) {
             let info = response.data.data;
             this.specData = info.specData;
             this.specValue = info.specValue;
@@ -651,7 +657,7 @@ export default {
     },
     getQiniuToken() {
       let that = this;
-      this.axios.post("index/getQiniuToken").then((response) => {
+      this.axios.post("upload/getUploadToken").then((response) => {
         let resInfo = response.data.data;
         that.picData.token = resInfo.token;
         that.url = resInfo.url;
@@ -774,7 +780,7 @@ export default {
             id: this.infoForm.id,
           })
           .then((response) => {
-            if (response.data.errno === 0) {
+            if (response.data.success) {
               this.$message({
                 type: "success",
                 message: "复制成功!",
@@ -837,7 +843,7 @@ export default {
               cateId: this.cateId,
             })
             .then((response) => {
-              if (response.data.errno === 0) {
+              if (response.data.success) {
                 this.$message({
                   type: "success",
                   message: "保存成功",
@@ -883,8 +889,9 @@ export default {
         });
     },
     handleUploadDetailSuccess(res) {
+      console.log("123", res);
       let url = this.url;
-      let data = url + res.key;
+      let data = "https://" + url + res.key;
       let quill = this.$refs.myTextEditor.quill;
       // 如果上传成功
       // 获取光标所在位置
