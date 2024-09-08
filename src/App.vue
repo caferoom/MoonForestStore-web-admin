@@ -1,15 +1,16 @@
 <template>
-  <div id="app">
-    <transition name="router-fade" mode="out-in">
-      <router-view></router-view>
-    </transition>
-  </div>
+  <Layout />
 </template>
 
 <script>
-export default {
-  name: "admin",
-};
+  import Layout from './components/layout/layout.vue';
+
+  export default {
+    name: "admin",
+    components: {
+      Layout,
+    }
+  };
 </script>
 
 <style>
@@ -24,7 +25,7 @@ body,
   height: 100%;
   width: 100%;
   background: #f5f7f9;
-  font-family: Lato, Helvetica, sans-serif;
+  font-family: Noto Sans SC, PingFang SC;
 }
 
 a,
@@ -73,16 +74,6 @@ a:hover {
 
 .form-table-box .el-textarea {
   width: 400px;
-}
-
-.router-fade-enter-active,
-.router-fade-leave-active {
-  transition: opacity 0.3s;
-}
-
-.router-fade-enter,
-.router-fade-leave-active {
-  opacity: 0;
 }
 
 .form-table-box .el-form {
