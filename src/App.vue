@@ -1,15 +1,29 @@
 <template>
-  <Layout />
+  <router-view v-if="isWithoutAuthentication()" />
+  <Layout  v-else />
 </template>
 
 <script>
-  import Layout from './components/layout/layout.vue';
+import { flatRoutes } from './common/menu';
+import Layout from './components/layout/layout.vue';
 
   export default {
     name: "admin",
     components: {
       Layout,
-    }
+    },
+    data() {
+      return {
+      };
+    },
+    methods: {
+      isWithoutAuthentication() {
+        const path = this.$route.path;
+        return !flatRoutes.find(route => route.url === path);
+      }
+    },
+    mounted() {
+    },
   };
 </script>
 
@@ -51,11 +65,6 @@ a:hover {
   width: auto;
   display: flex;
   align-items: center;
-}
-
-.content-main {
-  padding: 20px;
-  background: #fff;
 }
 
 .filter-box {

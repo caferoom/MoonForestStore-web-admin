@@ -1,123 +1,77 @@
 <template>
   <div class="left-box">
-    <div class="logo">
-      <img src="/static/images/loading.gif" />
-    </div>
+      <!-- <div class="logo">
+        <img src="/static/images/loading.gif" />
+      </div> -->
     <div class="a" style="overflow-x: hidden; overflow-y: auto; height: 100%">
       <el-menu
         class="sidebar"
         :unique-opened="true"
         :default-active="defaultActive"
-        @open="handleOpen"
-        :router="true"
-        @close="handleClose"
+        router
       >
-        <el-menu-item index="/welcome">
-          <i class="fa fa-tachometer"></i>
-          <span>后台主页</span>
-        </el-menu-item>
-        <el-menu-item index="/order">
-          <i class="fa fa-large fa-reorder"></i>
-          <span>订单列表</span>
-        </el-menu-item>
-        <el-submenu index="/goods">
-          <template slot="title">
-            <i class="fa fa-shopping-bag"></i>
-            <span>商品管理</span>
-          </template>
-          <el-menu-item index="/goods">
-            <i class="fa fa-circle"></i>
-            <span>商品列表</span>
+        <template v-for="(menu, index) in menuTree">
+          <el-menu-item v-if="!menu.children" :index="menu.url" @click="handleClick(menu.onClick)">
+            <i :class="menu.icon"></i>
+            <span>{{menu.name}}</span>
           </el-menu-item>
-          <el-menu-item index="/nature">
-            <i class="fa fa-circle"></i>
-            <span>商品设置</span>
-          </el-menu-item>
-        </el-submenu>
-        <el-menu-item index="/shopcart">
-          <i class="fa fa-large fa-shopping-cart"></i>
-          <span>购物车</span>
-        </el-menu-item>
-        <el-menu-item index="/user">
-          <i class="fa fa-large fa-users"></i>
-          <span>用户列表</span>
-        </el-menu-item>
-        <el-submenu index="settings">
-          <template slot="title">
-            <i class="fa fa-large fa-wrench"></i>
-            <span>店铺设置</span>
-          </template>
-          <el-menu-item index="/settings/showset">
-            <i class="fa fa-circle"></i>
-            <span>显示设置</span>
-          </el-menu-item>
-          <el-menu-item index="/ad">
-            <i class="fa fa-circle"></i>
-            <span>广告列表</span>
-          </el-menu-item>
-          <el-menu-item index="/notice">
-            <i class="fa fa-circle"></i>
-            <span>公告管理</span>
-          </el-menu-item>
-          <el-menu-item index="/freight">
-            <i class="fa fa-circle"></i>
-            <span>运费模板</span>
-          </el-menu-item>
-          <el-menu-item index="/shipper">
-            <i class="fa fa-circle"></i>
-            <span>快递设置</span>
-          </el-menu-item>
-          <el-menu-item index="/admin">
-            <i class="fa fa-circle"></i>
-            <span>管理员</span>
-          </el-menu-item>
-        </el-submenu>
-        <el-menu-item @click="logout">
-          <i class="fa fa-large fa-sign-out"></i>
-          <span>退出</span>
-        </el-menu-item>
+          <el-submenu v-else :index="menu.url" >
+            <template slot="title">
+              <i :class="menu.icon"></i>
+              <span>{{menu.name}}</span>
+            </template>
+            <template v-for="subMenu in menu.children">
+              <el-menu-item :index="subMenu.url" @click="handleClick(subMenu.onClick)">
+                <span>{{subMenu.name}}</span>
+              </el-menu-item>
+            </template>
+          </el-submenu>
+        </template>
       </el-menu>
     </div>
   </div>
 </template>
 
 <script>
+import { setUserInfo } from "@/common/helper";
+import { menuTree } from "../common/menu";
+
 export default {
   data() {
     return {
       defaultActive: "/dashboard",
+      menuTree: [
+        ...menuTree, 
+        {
+          name: "退出",
+          url: "",
+          icon: "el-icon-location",
+          onClick: this.logout,
+        },
+      ],
     };
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath);
+    handleClick(method) {
+      method && method();
     },
     logout() {
       this.$confirm("是否要退出?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(() => {
+    }).then(() => {
         localStorage.clear();
         this.$router.replace({ name: "login" });
-      });
-    },
-    checkLogin() {
-      this.axios.get("auth/checkLogin").then((response) => {
-        console.log(response.data);
-        if (response.data.statusCode === 401) {
-          localStorage.clear();
-          this.$router.replace({ name: "login" });
-        }
-      });
+    });
     },
   },
   mounted() {
-    console.log(this.$route.path);
-    this.checkLogin();
+    this.axios.post("admin/userInfo").then(res => {
+        if (res.success) {
+          setUserInfo(res.data);
+        }
+      });
   },
 };
 </script>

@@ -1,73 +1,65 @@
 <template>
-    <div class="content-page">
-        <div class="content-nav">
-            <el-breadcrumb class="breadcrumb" separator="/">
-                <el-breadcrumb-item>快递设置</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div class="operation-nav">
-                <router-link to="/dashboard/shipper/list">
-                    <el-button type="primary" icon="plus">快递公司列表</el-button>
-                </router-link>
-            </div>
+    <div>
+        <div class="operation-nav">
+            <router-link to="/dashboard/shipper/list">
+                <el-button type="primary" icon="plus">快递公司列表</el-button>
+            </router-link>
         </div>
-        <div class="content-main">
-            <div class="form-table-box">
-                <el-form ref="infoForm" :model="infoForm" :rules="infoRules" label-width="120px">
-                    <el-form-item label="打印后自动发货">
-                        <el-switch v-model="infoForm.autoDelivery"
-                                   @change='changeStatus(infoForm.autoDelivery)'></el-switch>
-                    </el-form-item>
-                    <el-form-item label="寄件人" prop="Name">
-                        <el-input v-model="infoForm.Name" placeholder="请输入非代理发货时的寄件人"></el-input>
-                    </el-form-item>
-                    <el-form-item label="电话" prop="Tel">
-                        <el-input v-model="infoForm.Tel" placeholder="请输入电话"></el-input>
-                    </el-form-item>
-                    <el-form-item label="省份" prop="ProvinceName">
-                        <el-cascader
-                                :options="options"
-                                placeholder="请选择地区"
-                                v-model="senderOptions">
-                        </el-cascader>
-                    </el-form-item>
-                    <!---->
-                    <!--<el-form-item label="省份" prop="ProvinceName">-->
-                        <!--<el-input v-model="infoForm.ProvinceName" placeholder="请输入省份"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="城市" prop="CityName">-->
-                        <!--<el-input v-model="infoForm.CityName" placeholder="请输入城市"></el-input>-->
-                    <!--</el-form-item>-->
-                    <!--<el-form-item label="区/县" prop="ExpAreaName">-->
-                        <!--<el-input v-model="infoForm.ExpAreaName" placeholder="请输入区/县"></el-input>-->
-                    <!--</el-form-item>-->
-                    <el-form-item label="地址" prop="Address">
-                        <el-input v-model="infoForm.Address" placeholder="请输入具体地址"></el-input>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSaveSubmit">确定保存</el-button>
-                    </el-form-item>
-                </el-form>
+        <div class="form-table-box">
+            <el-form ref="infoForm" :model="infoForm" :rules="infoRules" label-width="120px">
+                <el-form-item label="打印后自动发货">
+                    <el-switch v-model="infoForm.autoDelivery"
+                                @change='changeStatus(infoForm.autoDelivery)'></el-switch>
+                </el-form-item>
+                <el-form-item label="寄件人" prop="Name">
+                    <el-input v-model="infoForm.Name" placeholder="请输入非代理发货时的寄件人"></el-input>
+                </el-form-item>
+                <el-form-item label="电话" prop="Tel">
+                    <el-input v-model="infoForm.Tel" placeholder="请输入电话"></el-input>
+                </el-form-item>
+                <el-form-item label="省份" prop="ProvinceName">
+                    <el-cascader
+                            :options="options"
+                            placeholder="请选择地区"
+                            v-model="senderOptions">
+                    </el-cascader>
+                </el-form-item>
+                <!---->
+                <!--<el-form-item label="省份" prop="ProvinceName">-->
+                    <!--<el-input v-model="infoForm.ProvinceName" placeholder="请输入省份"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="城市" prop="CityName">-->
+                    <!--<el-input v-model="infoForm.CityName" placeholder="请输入城市"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="区/县" prop="ExpAreaName">-->
+                    <!--<el-input v-model="infoForm.ExpAreaName" placeholder="请输入区/县"></el-input>-->
+                <!--</el-form-item>-->
+                <el-form-item label="地址" prop="Address">
+                    <el-input v-model="infoForm.Address" placeholder="请输入具体地址"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSaveSubmit">确定保存</el-button>
+                </el-form-item>
+            </el-form>
 
-            </div>
-            <div class="form-table-box">
-                <el-form label-width="120px">
-                    <el-form-item label="使用中的快递">
-                        <el-table :data="tableData" style="width: 100%" border stripe>
-                            <el-table-column prop="name" label="名字"></el-table-column>
-                            <el-table-column prop="code" label="代号"></el-table-column>
-                            <el-table-column prop="CustomerName" label="客户编号"></el-table-column>
-                            <el-table-column prop="monthCode" label="月结账号"></el-table-column>
-                            <el-table-column label="操作" width="170">
-                                <template slot-scope="scope">
-                                    <el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">编辑
-                                    </el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                    </el-form-item>
-                </el-form>
-            </div>
-
+        </div>
+        <div class="form-table-box">
+            <el-form label-width="120px">
+                <el-form-item label="使用中的快递">
+                    <el-table :data="tableData" style="width: 100%" border stripe>
+                        <el-table-column prop="name" label="名字"></el-table-column>
+                        <el-table-column prop="code" label="代号"></el-table-column>
+                        <el-table-column prop="CustomerName" label="客户编号"></el-table-column>
+                        <el-table-column prop="monthCode" label="月结账号"></el-table-column>
+                        <el-table-column label="操作" width="170">
+                            <template slot-scope="scope">
+                                <el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">编辑
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-form-item>
+            </el-form>
         </div>
     </div>
 </template>

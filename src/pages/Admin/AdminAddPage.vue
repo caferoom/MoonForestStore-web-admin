@@ -1,47 +1,34 @@
 <template>
-    <div class="content-page">
-        <div class="content-nav">
-            <el-breadcrumb class="breadcrumb" separator="/">
-                <el-breadcrumb-item :to="{ name: 'admin' }">管理员</el-breadcrumb-item>
-                <el-breadcrumb-item>{{infoForm.id ? '编辑管理员' : '添加管理员'}}</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div class="operation-nav">
-                <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
-                <!--<el-button type="primary" @click="testa" icon="arrow-left">测试</el-button>-->
-            </div>
-        </div>
-        <div class="content-main">
-            <div class="form-table-box">
-                <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
-                    <el-form-item label="管理员用户名" prop="username">
-                        <el-input v-model="infoForm.username"></el-input>
+    <div class="page-container">
+        <div class="form-table-box">
+            <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
+                <el-form-item label="管理员用户名" prop="username">
+                    <el-input v-model="infoForm.username"></el-input>
+                </el-form-item>
+                <template v-if="infoForm.id">
+                    <el-form-item label="新密码">
+                        <el-switch v-model="change" active-color="#13ce66"/>
                     </el-form-item>
-                    <el-form-item label="新密码" v-if="infoForm.id"  prop="newpassword">
-                        <el-switch
-                                v-model="change"
-                                active-color="#13ce66">
-                        </el-switch>
+                    <el-form-item label="" v-if="change" prop="password">
+                        <el-input type="password" v-model="infoForm.password" placeholder="输入新的密码"></el-input>
                     </el-form-item>
-                    <el-form-item label="" v-if="change"  prop="newpassword">
-                        <el-input type="password" v-model="infoForm.newpassword" placeholder="输入新的密码"></el-input>
-                    </el-form-item>
-                    <el-form-item label="密码" v-if="!infoForm.id" prop="password">
+                </template>
+                <template v-else>
+                    <el-form-item label="密码">
                         <el-input type="password" v-model="infoForm.password"></el-input>
                     </el-form-item>
-                    <el-form-item>
-                        <el-button v-if="infoForm.id > 0" type="primary" @click="saveAdminInfo">确定保存</el-button>
-                        <el-button v-else type="primary" @click="addAdminInfo">确定添加</el-button>
-                        <el-button @click="goBackPage">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
+                </template>
+                <el-form-item>
+                    <el-button v-if="infoForm.id > 0" type="primary" @click="saveAdminInfo">确定保存</el-button>
+                    <el-button v-else type="primary" @click="addAdminInfo">确定添加</el-button>
+                    <el-button @click="goBackPage">取消</el-button>
+                </el-form-item>
+            </el-form>
         </div>
     </div>
 </template>
 
 <script>
-    import api from '@/common/api';
-
     export default {
         data() {
             return {
@@ -49,7 +36,6 @@
                 infoForm: {
                     id: 0,
                     username: "",
-                    newpassword: '',
                     password: ''
                 },
                 infoRules: {
@@ -63,43 +49,44 @@
             }
         },
         methods: {
-            testa() {
-                console.log(this.tableData);
-                console.log(this.infoForm);
-            },
             goBackPage() {
                 this.$router.go(-1);
             },
             saveAdminInfo() {
-                let user = this.infoForm;
-                if(this.change == true){
-                    let password = user.newpassword;
-                    if(password == undefined){
-                        user.newpassword = ''
-                    }
-                    if(password != undefined && password.replace(/(^\s*)|(\s*$)/g, "").length < 6){
-                        this.$message({
-                            type: 'error',
-                            message: '密码请大于6个字符'
-                        })
-                        return false;
+                let { username, password, id } = this.infoForm;
+                if(this.change) {
+                  // 编辑密码
+                    if (password != undefined) {
+                        password = password.replace(/(^\s*)|(\s*$)/g, ""); // 删除左右空格
+                        if (password.length < 6) {
+                            this.$message({
+                                type: 'error',
+                                message: '密码请大于6个字符'
+                            });
+                            return false;
+                        }
                     }
                 }
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('admin/adminSave', {
-                            user: user,
-                            change:this.change,
+                        const user = { username, password, id };
+                        if (!this.change) {
+                            delete user.password;
+                        }
+                        console.log("&&&", user);
+                        this.axios.post('admin/update', {
+                            ...user,
                         }).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
                                 });
+                                this.goBackPage(-1);
                             } else {
                                 this.$message({
                                     type: 'error',
-                                    message: '保存失败'
+                                    message: response?.message?.message || "保存失败",
                                 })
                             }
                         })
@@ -109,24 +96,23 @@
                 });
             },
             addAdminInfo() {
-                let user = this.infoForm;
-                let password = user.password;
-                if(password == undefined){
-                    user.password = ''
-                }
-                if(password != undefined && password.replace(/(^\s*)|(\s*$)/g, "").length < 6){
-                    this.$message({
-                        type: 'error',
-                        message: '密码请大于6个字符'
-                    })
-                    return false;
+                let { username, password } = this.infoForm;
+                if(password !== undefined){
+                    password = password.replace(/(^\s*)|(\s*$)/g, "");
+                    if (password.length < 6) {
+                        this.$message({
+                            type: 'error',
+                            message: '密码请大于6个字符',
+                        })
+                        return false;
+                    }
                 }
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('admin/adminAdd', {
-                            user: user,
+                        this.axios.post('admin/create', {
+                            username, password,
                         }).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功'
@@ -135,7 +121,7 @@
                             } else {
                                 this.$message({
                                     type: 'error',
-                                    message: '添加失败'
+                                    message: response?.message?.message || "添加失败",
                                 })
                             }
                         })
@@ -144,86 +130,22 @@
                     }
                 });
             },
-            getInfo() {
-                //加载品牌详情
-                let that = this
-                this.axios.post('admin/adminDetail', {
-                    id: that.infoForm.id
-                }).then((response) => {
-                    console.log("response", response);
-                    if (response.data.success) {
-                        let resInfo = response.data.data;
-                        that.infoForm.username = resInfo.username;
-                        that.infoForm.password = resInfo.password;
-
-                    }
-                })
-            }
         },
         components: {},
         mounted() {
             this.infoForm.id = this.$route.query.id || 0;
-            console.log(this.infoForm.id);
             if (this.$route.query.id) {
-                this.getInfo();
+                this.infoForm.id  = Number(this.$route.query.id);
+                this.infoForm.username  = this.$route.query.username;
             }
         }
     }
 
 </script>
 
-<style>
-    .image-uploader {
-        height: 105px;
-    }
-
-    .image-uploader .el-upload {
-        border: 1px solid #d9d9d9;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .image-uploader .el-upload:hover {
-        border-color: #20a0ff;
-    }
-
-    .image-uploader .image-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 187px;
-        height: 105px;
-        line-height: 105px;
-        text-align: center;
-    }
-
-    .image-uploader .image-show {
-        width: 187px;
-        height: 105px;
-        display: block;
-    }
-
-    .image-uploader.new-image-uploader {
-        font-size: 28px;
-        color: #8c939d;
-        width: 165px;
-        height: 105px;
-        line-height: 105px;
-        text-align: center;
-    }
-
-    .image-uploader.new-image-uploader .image-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 165px;
-        height: 105px;
-        line-height: 105px;
-        text-align: center;
-    }
-
-    .image-uploader.new-image-uploader .image-show {
-        width: 165px;
-        height: 105px;
-        display: block;
-    }
+<style scoped>
+	.page-container {
+		background-color: white;
+		padding: 16px;
+	}
 </style>

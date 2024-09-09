@@ -13,6 +13,7 @@
         <el-tab-pane label="已关闭" name="fifth"></el-tab-pane>
         <el-tab-pane label="全部订单" name="sixth"></el-tab-pane>
       </el-tabs>
+      <!-- filters -->
       <div class="filter-box">
         <el-form :inline="true" :model="filterForm" class="demo-form-inline">
           <el-form-item label="订单号">
@@ -41,11 +42,9 @@
           </el-form-item>
         </el-form>
       </div>
+      <!-- <order_table /> -->
+      <!-- table -->
       <div class="form-table-box">
-        <el-checkbox-group
-          v-model="checkedCities"
-          @change="handleCheckedCitiesChange"
-        >
           <div v-for="item in tableData" class="list-wrap clearfix">
             <div class="header clearfix">
               <div class="left">
@@ -146,7 +145,6 @@
               </div>
             </div>
           </div>
-        </el-checkbox-group>
       </div>
       <div class="page-box">
         <el-pagination
@@ -159,6 +157,7 @@
         </el-pagination>
       </div>
     </div>
+    <!-- dialogs -->
     <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
       <span>确定打包备货</span>
       <span slot="footer" class="dialog-footer">
@@ -1349,6 +1348,7 @@
 <script>
 import VueBarcode from "../../../node_modules/vue-barcode";
 import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
+// import Table from "./components/table.vue";
 // Vue.component(VueBarcode.name, VueBarcode);
 
 // import { Button } from 'element-ui';
@@ -1364,7 +1364,6 @@ export default {
         "http://sandboxapi.kdniao.com:8080/kdniaosandbox/gateway/exterfaceInvoke.json",
       expressType: 0, // 选择快递方式
       checkAll: false,
-      checkedCities: ["上海", "北京"],
       cities: ["上海", "北京", "广州", "深圳"],
       isIndeterminate: true,
       page: 1,
@@ -1568,9 +1567,6 @@ export default {
     cancelPrint() {
       this.printMiandan = false;
       this.dialogFormVisible = false;
-    },
-    handleCheckedCitiesChange() {
-      console.log("哈哈");
     },
     onPrintNum() {
       this.axios
@@ -2011,6 +2007,7 @@ export default {
   components: {
     ElButton,
     barcode: VueBarcode,
+    // order_table: Table,
   },
   // created(){
   //     this.getList();

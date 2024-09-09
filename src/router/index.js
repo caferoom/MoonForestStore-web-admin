@@ -149,14 +149,14 @@ export const constantRoutes = [
     component: () => import("@/pages/Admin/AdminAddPage"),
   },
   {
+    path: "/admin/edit",
+    name: "admin_edit",
+    component: () => import("@/pages/Admin/AdminAddPage"),
+  },
+  {
     path: "/settings/showset",
     name: "showset",
     component: () => import("@/pages/Showset/ShowSetPage"),
-  },
-  {
-    path: "/login",
-    name: "login",
-    component: () => import("@/pages/LoginPage"),
   },
   {
     path: "*",
