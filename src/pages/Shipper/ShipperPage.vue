@@ -1,66 +1,53 @@
 <template>
-    <div>
-        <div class="operation-nav">
-            <router-link to="/dashboard/shipper/list">
-                <el-button type="primary" icon="plus">快递公司列表</el-button>
-            </router-link>
-        </div>
-        <div class="form-table-box">
-            <el-form ref="infoForm" :model="infoForm" :rules="infoRules" label-width="120px">
-                <el-form-item label="打印后自动发货">
-                    <el-switch v-model="infoForm.autoDelivery"
-                                @change='changeStatus(infoForm.autoDelivery)'></el-switch>
-                </el-form-item>
-                <el-form-item label="寄件人" prop="Name">
-                    <el-input v-model="infoForm.Name" placeholder="请输入非代理发货时的寄件人"></el-input>
-                </el-form-item>
-                <el-form-item label="电话" prop="Tel">
-                    <el-input v-model="infoForm.Tel" placeholder="请输入电话"></el-input>
-                </el-form-item>
-                <el-form-item label="省份" prop="ProvinceName">
-                    <el-cascader
-                            :options="options"
-                            placeholder="请选择地区"
-                            v-model="senderOptions">
-                    </el-cascader>
-                </el-form-item>
-                <!---->
-                <!--<el-form-item label="省份" prop="ProvinceName">-->
-                    <!--<el-input v-model="infoForm.ProvinceName" placeholder="请输入省份"></el-input>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="城市" prop="CityName">-->
-                    <!--<el-input v-model="infoForm.CityName" placeholder="请输入城市"></el-input>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="区/县" prop="ExpAreaName">-->
-                    <!--<el-input v-model="infoForm.ExpAreaName" placeholder="请输入区/县"></el-input>-->
-                <!--</el-form-item>-->
-                <el-form-item label="地址" prop="Address">
-                    <el-input v-model="infoForm.Address" placeholder="请输入具体地址"></el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSaveSubmit">确定保存</el-button>
-                </el-form-item>
-            </el-form>
-
-        </div>
-        <div class="form-table-box">
-            <el-form label-width="120px">
-                <el-form-item label="使用中的快递">
-                    <el-table :data="tableData" style="width: 100%" border stripe>
-                        <el-table-column prop="name" label="名字"></el-table-column>
-                        <el-table-column prop="code" label="代号"></el-table-column>
-                        <el-table-column prop="CustomerName" label="客户编号"></el-table-column>
-                        <el-table-column prop="monthCode" label="月结账号"></el-table-column>
-                        <el-table-column label="操作" width="170">
-                            <template slot-scope="scope">
-                                <el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">编辑
-                                </el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-form-item>
-            </el-form>
-        </div>
+	<div class="page-container">
+        <div class="header">发件地址设置</div>
+        <el-form ref="infoForm" :model="infoForm" :rules="infoRules" label-width="120px">
+            <el-form-item label="打印后自动发货">
+                <el-switch v-model="infoForm.autoDelivery"
+                            @change='changeStatus(infoForm.autoDelivery)'></el-switch>
+            </el-form-item>
+            <el-form-item label="寄件人" prop="Name">
+                <el-input v-model="infoForm.Name" placeholder="请输入非代理发货时的寄件人"></el-input>
+            </el-form-item>
+            <el-form-item label="电话" prop="Tel">
+                <el-input v-model="infoForm.Tel" placeholder="请输入电话"></el-input>
+            </el-form-item>
+            <el-form-item label="省市区" prop="ProvinceName">
+                <el-cascader
+                        :options="options"
+                        placeholder="请选择地区"
+                        v-model="senderOptions">
+                </el-cascader>
+            </el-form-item>
+            <el-form-item label="地址" prop="Address">
+                <el-input v-model="infoForm.Address" placeholder="请输入具体地址"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSaveSubmit">保存</el-button>
+            </el-form-item>
+        </el-form>
+        <div class="header">生效的快递</div>
+        <el-form label-width="120px">
+            <el-form-item label="">
+                <div class="table-tools">
+                    <router-link to="/shipper/list">
+                        <el-button type="primary" size="small" icon="plus">配置生效快递</el-button>
+                    </router-link>
+                </div>
+                <el-table :data="tableData" style="width: 100%" border stripe>
+                    <el-table-column prop="name" label="名字"></el-table-column>
+                    <el-table-column prop="code" label="代号"></el-table-column>
+                    <el-table-column prop="CustomerName" label="客户编号"></el-table-column>
+                    <el-table-column prop="monthCode" label="月结账号"></el-table-column>
+                    <el-table-column label="操作" width="170">
+                        <template slot-scope="scope">
+                            <el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">编辑
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
@@ -105,13 +92,15 @@
             getAllRegion() {
                 let that = this;
                 this.axios.get('common/getAllRegion').then((response) => {
-                    this.options = response.data.data;
+                    if (response.success) {
+                        this.options = response.data;
+                    }
                 })
             },
             changeStatus() {
                 this.infoForm.autoDelivery == true ? this.infoForm.autoDelivery = 1 : this.infoForm.autoDelivery = 0;
                 this.axios.post('shipper/changeAutoStatus', {status:this.infoForm.autoDelivery}).then((response) => {
-                    if (response.data.success) {
+                    if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '更改成功'
@@ -137,7 +126,7 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('shipper/storeShipperSettings', this.infoForm).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
@@ -158,18 +147,23 @@
             },
             getList() {
                 this.axios.get('shipper/usingDeliveryCompanyList').then((response) => {
-                    this.tableData = response.data.data;
+                    if (response.success) {
+                        this.tableData = response.data;
+                    }
                 })
             },
             getShippingAddress() {
                 this.axios.get('shipper/getShippingAddress').then((response) => {
-                    this.infoForm = response.data.data;
-                    this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false;
-                    this.senderOptions.push(
-                        this.infoForm.province_id,
-                        this.infoForm.city_id,
-                        this.infoForm.district_id
-                    );
+                    if (response.success) {
+                        this.infoForm = response.data;
+                        this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false;
+                        this.senderOptions.push(
+                            this.infoForm.province_id,
+                            this.infoForm.city_id,
+                            this.infoForm.district_id
+                        );
+                    }
+
                 })
             }
         },
@@ -182,8 +176,20 @@
     }
 </script>
 <style scoped>
-    .form-table-box {
-        border: 1px solid #f1f1f1;
-        margin-bottom: 20px;
+    .header {
+        font-weight: 700;
+        font-size: 18px;
+        color: #606266;
+        margin-bottom: 16px;
     }
+
+	.table-tools {
+		text-align: right;
+		margin-bottom: 8px;
+	}
+
+    .page-container {
+		background-color: white;
+		padding: 16px;
+	}
 </style>

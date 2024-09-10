@@ -100,8 +100,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 				this.axios.post('shipper/destory', { id: row.id }).then((response) => {
-					console.log(response.data)
-					if (response.data.success) {
+					if (response.success) {
 						this.$message({
 							type: 'success',
 							message: '删除成功!'
@@ -122,9 +121,9 @@ export default {
 					name: this.filterForm.name
 				}
 			}).then((response) => {
-                this.tableData = response.data.data.data
-                this.page = response.data.data.currentPage
-                this.total = response.data.data.count
+                this.tableData = response.data.data
+                this.page = response.data.currentPage
+                this.total = response.data.count
 				for(const item of this.tableData){
 					item.enabled = item.enabled?true:false
 				}
@@ -137,7 +136,7 @@ export default {
 		            id: para
 		        }
 		    }).then((response) => {
-				if (response.data.success) {
+				if (response.success) {
 					this.$message({
 					type: 'success',
 					message: '更新成功!'
