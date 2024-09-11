@@ -72,7 +72,7 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('shipper/store', this.infoForm).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
@@ -102,7 +102,7 @@
                         id: that.infoForm.id
                     }
                 }).then((response) => {
-                    let resInfo = response.data.data;
+                    let resInfo = response.data;
                     that.infoForm = resInfo;
                 })
             }

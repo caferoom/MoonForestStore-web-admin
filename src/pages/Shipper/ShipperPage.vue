@@ -98,16 +98,15 @@
                 })
             },
             changeStatus() {
-                this.infoForm.autoDelivery == true ? this.infoForm.autoDelivery = 1 : this.infoForm.autoDelivery = 0;
-                this.axios.post('shipper/changeAutoStatus', {status:this.infoForm.autoDelivery}).then((response) => {
+                this.axios.post('shipper/changeAutoStatus', {
+                    status: this.infoForm.autoDelivery ? 1 : 0,
+                }).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '更改成功'
                         });
-                        this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false
-                    }
-                    else {
+                    } else {
                         this.$message({
                             type: 'error',
                             message: '更改失败'
@@ -116,7 +115,7 @@
                 })
             },
             handleRowEdit(index, row) {
-                this.$router.push({name: 'shipper_add', query: {id: row.id}})
+                this.$router.push({name: 'shipper_add', query: { id: row.id }})
             },
             onSaveSubmit() {
                 this.infoForm.province_id = this.senderOptions[0];
