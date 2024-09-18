@@ -237,7 +237,7 @@
             saveAddress() {
                 this.nowAddressData.addOptions = this.addOptions;
                 this.axios.post('user/saveaddress', this.nowAddressData).then((response) => {
-                    if (response.data.success) {
+                    if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
@@ -287,14 +287,14 @@
                     this.getFootData();
                 }
             },
-            submitNick(index, row) {
-                this.axios.post('user/updateInfo', {id: row.id, nickname: row.nickname}).then((response) => {
+            // submitNick(index, row) {
+            //     this.axios.post('user/updateInfo', {id: row.id, nickname: row.nickname}).then((response) => {
 
-                })
-            },
+            //     })
+            // },
             submitName(index, row) {
                 this.axios.post('user/updateName', {id: row.id, name: row.name}).then((response) => {
-                    if (response.data.success) {
+                    if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
@@ -309,7 +309,7 @@
             },
             submitMobile(index, row) {
                 this.axios.post('user/updateMobile', {id: row.id, mobile: row.mobile}).then((response) => {
-                    if (response.data.success) {
+                    if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '修改成功!'
@@ -353,9 +353,12 @@
                         id: that.infoForm.id
                     }
                 }).then((response) => {
-                    console.log("rrrr", response)
-                    let info = response.data.data;
-                    this.dataInfo = info;
+                    if (response.success) {
+                        console.log("rrrr", response)
+                        let info = response.data;
+                        this.dataInfo = info;
+                    }
+
                 })
             },
             getInfo() {
@@ -368,8 +371,11 @@
                         id: that.infoForm.id
                     }
                 }).then((response) => {
-                    let info = response.data.data;
-                    this.userData.push(info);
+                    if (response.success) {
+                        let info = response.data;
+                        this.userData.push(info);
+                    }
+
                 })
             },
             getOrder() {
@@ -383,9 +389,11 @@
                         page: this.page,
                     }
                 }).then((response) => {
-                    this.orderData = response.data.data.data;
-                    this.page = response.data.data.currentPage;
-                    this.total = response.data.data.count
+                    if (response.success) {
+                        this.orderData = response.data.data;
+                        this.page = response.data.currentPage;
+                        this.total = response.data.count
+                    }
                 })
             },
             getAddress() {
@@ -399,9 +407,11 @@
                         page: this.page,
                     }
                 }).then((response) => {
-                    this.addressData = response.data.data.data;
-                    this.page = response.data.data.currentPage;
-                    this.total = response.data.data.count;
+                    if (response.success) {
+                        this.addressData = response.data.data;
+                        this.page = response.data.currentPage;
+                        this.total = response.data.count;
+                    }
                 })
 
             },
@@ -416,9 +426,12 @@
                         page: this.page,
                     }
                 }).then((response) => {
-                    this.cartData = response.data.data.data;
-                    this.page = response.data.data.currentPage;
-                    this.total = response.data.data.count
+                    if (response.success) {
+                        this.cartData = response.data.data;
+                        this.page = response.data.currentPage;
+                        this.total = response.data.count;
+                    }
+
                 })
             },
             getFootData() {
@@ -432,15 +445,20 @@
                         page: this.page,
                     }
                 }).then((response) => {
-                    this.footData = response.data.data.data
-                    this.page = response.data.data.currentPage
-                    this.total = response.data.data.count
+                    if (response.success) {
+                        this.footData = response.data.data
+                        this.page = response.data.currentPage
+                        this.total = response.data.count
+                    }
+
                 })
             },
             getAllRegion() {
                 let that = this;
                 this.axios.get('common/getAllRegion').then((response) => {
-                    this.options = response.data.data;
+                    if (response.success) {
+                        this.options = response.data;
+                    }
                 })
             },
         },

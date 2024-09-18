@@ -82,6 +82,11 @@ export const constantRoutes = [
     component: () => import("@/pages/Shipper/ShipperAddPage"),
   },
   {
+    path: "/shipper/edit",
+    name: "shipper_edit",
+    component: () => import("@/pages/Shipper/ShipperAddPage"),
+  },
+  {
     path: "/freight",
     name: "freight",
     component: () => import("@/pages/Freight/FreightPage"),

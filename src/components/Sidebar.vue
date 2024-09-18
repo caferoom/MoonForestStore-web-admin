@@ -39,7 +39,7 @@ import { menuTree } from "../common/menu";
 export default {
   data() {
     return {
-      defaultActive: "/dashboard",
+      defaultActive: "/goods",
       menuTree: [
         ...menuTree, 
         {
@@ -72,6 +72,7 @@ export default {
           setUserInfo(res.data);
         }
       });
+      this.defaultActive = this.$route.path;
   },
 };
 </script>

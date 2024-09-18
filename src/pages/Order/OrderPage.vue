@@ -1464,7 +1464,7 @@ export default {
         });
     },
     getDeliveyInfo() {
-      this.axios.get("shipper/delivery").then((response) => {
+      this.axios.get("shipper/usingDeliveryCompanyList").then((response) => {
         this.deliveryCom = response.data.data;
       });
     },

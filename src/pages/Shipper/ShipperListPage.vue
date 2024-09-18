@@ -1,18 +1,11 @@
 <template>
-	<div class="content-page">
-		<div class="content-nav">
-			<el-breadcrumb class="breadcrumb" separator="/">
-				<el-breadcrumb-item :to="{ name: 'shipper' }">快递设置</el-breadcrumb-item>
-				<el-breadcrumb-item>快递列表</el-breadcrumb-item>
-			</el-breadcrumb>
-			<div class="operation-nav">
-				<el-button plain type="primary" @click="addShipper" icon="arrow-left">添加快递</el-button>
-				<el-button @click="goBackPage" icon="arrow-left">返回</el-button>
-			</div>
+	<div class="page-container">
+		<div>
+			<el-button @click="goBackPage" size="small" icon="arrow-left">返回</el-button>
 		</div>
 		<div class="content-main">
 			<div class="filter-box">
-				<el-form :inline="true" :model="filterForm" class="demo-form-inline">
+				<el-form :inline="true" :model="filterForm">
 					<el-form-item label="快递公司">
 						<el-input v-model="filterForm.name" placeholder="搜索快递公司"></el-input>
 					</el-form-item>
@@ -20,6 +13,9 @@
 						<el-button type="primary" @click="onSubmitFilter">查询</el-button>
 					</el-form-item>
 				</el-form>
+			</div>
+			<div class="table-tools">
+				<el-button type="primary" size="small" icon="plus" @click="addShipper">添加快递</el-button>
 			</div>
 			<div class="form-table-box">
 				<el-table :data="tableData" style="width: 100%" border stripe>
@@ -40,7 +36,7 @@
 					                v-model="scope.row.enabled"
 					                active-text=""
 					                inactive-text=""
-					                @change='changeStatus($event,scope.row.id)'>
+					                @change='changeStatus($event, scope.row.id)'>
 					        </el-switch>
 					    </template>
 					</el-table-column>
@@ -75,16 +71,20 @@ export default {
 	},
 	methods: {
 		submitSort(index, row){
-		    this.axios.post('shipper/updateSort', { id: row.id, sort:row.sort_order }).then((response) => {})
+		    this.axios.post('shipper/updateSort', { id: row.id, sort: row.sort_order }).then((response) => {
+				if (!response.success) {
+					this.$message({
+						type: 'falied',
+						message: '操作失败，请稍后再试!'
+					});
+				}
+			})
 		},
         goBackPage() {
             this.$router.go(-1);
         },
 		handlePageChange(val) {
 			this.page = val;
-			//保存到localStorage
-			localStorage.setItem('shipperPage', this.page)
-			localStorage.setItem('shipperFilterForm', JSON.stringify(this.filterForm));
 			this.getList()
 		},
 		addShipper() {
@@ -99,7 +99,7 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.axios.post('shipper/destory', { id: row.id }).then((response) => {
+				this.axios.post('shipper/remove', { id: row.id }).then((response) => {
 					if (response.success) {
 						this.$message({
 							type: 'success',
@@ -121,19 +121,21 @@ export default {
 					name: this.filterForm.name
 				}
 			}).then((response) => {
-                this.tableData = response.data.data
-                this.page = response.data.currentPage
-                this.total = response.data.count
-				for(const item of this.tableData){
-					item.enabled = item.enabled?true:false
+				if (response.success) {
+					this.tableData = response.data.data
+					this.page = response.data.currentPage
+					this.total = response.data.count
+					for(const item of this.tableData){
+						item.enabled = item.enabled?true:false
+					}
 				}
 			})
 		},
-		changeStatus($event, para) {
+		changeStatus($event, id) {
 		    this.axios.get('shipper/enabledStatus', {
 		        params: {
-		            status: $event,
-		            id: para
+		            enable: $event,
+		            id: id
 		        }
 		    }).then((response) => {
 				if (response.success) {
@@ -143,16 +145,14 @@ export default {
 					});
 				} else {
 					this.$message({
-					type: 'falied',
-					message: '更新失败!'
-				});
-			}
+						type: 'falied',
+						message: '更新失败!'
+					});
+				}
 		    });
 		},
 	},
-	components: {
-
-	},
+	components: {},
 	mounted() {
 		this.getList();
 	}
@@ -161,5 +161,13 @@ export default {
 </script>
 
 <style scoped>
+	.page-container {
+		background-color: white;
+		padding: 16px;
+	}
 
+	.table-tools {
+		text-align: right;
+		margin-bottom: 8px;
+	}
 </style>

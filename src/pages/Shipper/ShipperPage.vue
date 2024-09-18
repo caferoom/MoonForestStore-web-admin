@@ -57,11 +57,6 @@
         data() {
             return {
                 infoForm: {},
-                page: 1,
-                total: 0,
-                filterForm: {
-                    name: ''
-                },
                 tableData: [],
                 options: [],
                 senderOptions:[],
@@ -99,7 +94,7 @@
             },
             changeStatus() {
                 this.axios.post('shipper/changeAutoStatus', {
-                    status: this.infoForm.autoDelivery ? 1 : 0,
+                    enable: this.infoForm.autoDelivery,
                 }).then((response) => {
                     if (response.success) {
                         this.$message({
@@ -115,13 +110,12 @@
                 })
             },
             handleRowEdit(index, row) {
-                this.$router.push({name: 'shipper_add', query: { id: row.id }})
+                this.$router.push({name: 'shipper_edit', query: { id: row.id }})
             },
             onSaveSubmit() {
                 this.infoForm.province_id = this.senderOptions[0];
                 this.infoForm.city_id = this.senderOptions[1];
                 this.infoForm.district_id = this.senderOptions[2];
-                this.infoForm.autoDelivery == true ? this.infoForm.autoDelivery = 1 : this.infoForm.autoDelivery = 0;
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('shipper/storeShipperSettings', this.infoForm).then((response) => {
@@ -130,13 +124,12 @@
                                     type: 'success',
                                     message: '保存成功'
                                 });
-                                this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false
                             }
                             else {
                                 this.$message({
                                     type: 'error',
                                     message: '保存失败'
-                                })
+                                });
                             }
                         })
                     } else {
@@ -145,17 +138,17 @@
                 });
             },
             getList() {
-                this.axios.get('shipper/usingDeliveryCompanyList').then((response) => {
-                    if (response.success) {
-                        this.tableData = response.data;
-                    }
-                })
+                this.axios.get('shipper/usingDeliveryCompanyList')
+                    .then((response) => {
+                        if (response.success) {
+                            this.tableData = response.data;
+                        }
+                });
             },
-            getShippingAddress() {
-                this.axios.get('shipper/getShippingAddress').then((response) => {
+            getSenderInfo() {
+                this.axios.get('shipper/getSenderInfo').then((response) => {
                     if (response.success) {
                         this.infoForm = response.data;
-                        this.infoForm.autoDelivery == 1 ? this.infoForm.autoDelivery = true : this.infoForm.autoDelivery = false;
                         this.senderOptions.push(
                             this.infoForm.province_id,
                             this.infoForm.city_id,
@@ -169,7 +162,7 @@
         components: {},
         mounted() {
             this.getList();
-            this.getShippingAddress(); 
+            this.getSenderInfo(); 
             this.getAllRegion();
         }
     }

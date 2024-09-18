@@ -1,16 +1,10 @@
 <template>
-    <div class="content-page">
-        <div class="content-nav">
-            <el-breadcrumb class="breadcrumb" separator="/">
-                <el-breadcrumb-item>公告管理</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div class="operation-nav">
-                <div style="margin-left:10px;"></div>
-                <el-button type="primary" icon="plus" @click="addNotice">添加公告</el-button>
-            </div>
-        </div>
+    <div class="page-container">
         <div class="content-main">
             <div class="form-table-box">
+                <div class="table-tools">
+                    <el-button type="primary" size="small" icon="plus" @click="addNotice">添加公告</el-button>
+                </div>
                 <el-table :data="tableData" style="width: 100%" border stripe>
                     <el-table-column prop="id" label="ID" width="60"></el-table-column>
                     <el-table-column prop="content" label="内容"></el-table-column>
@@ -48,16 +42,13 @@
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="dialog = false">取 消</el-button>
-                <!--<el-button @click="test">取 消</el-button>-->
                 <el-button type="primary" @click="goNotice" v-if="is_add">确定添加</el-button>
                 <el-button type="primary" @click="updateNotice" v-if="!is_add">确定修改</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
-
 <script>
-
     export default {
         data() {
             return {
@@ -71,11 +62,7 @@
             }
         },
         methods: {
-            test(){
-              console.log(this.noticeData);
-            },
             updateNotice() {
-                console.log(this.noticeData);
                 if(this.noticeData.content == ''){
                     this.$message({
                         type: 'error',
@@ -91,7 +78,7 @@
                     return false;
                 }
                 this.axios.post('notice/update', this.noticeData).then((response) => {
-                    if (response.data.success) {
+                    if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '添加成功!'
@@ -123,7 +110,7 @@
                     return false;
                 }
                 this.axios.post('notice/add', this.noticeData).then((response) => {
-                    if (response.data.success) {
+                    if (response.success) {
                         this.$message({
                             type: 'success',
                             message: '添加成功!'
@@ -151,7 +138,6 @@
             },
             submitContent(index, row) {
                 this.axios.post('notice/updateContent', {id: row.id, content: row.content}).then((response) => {
-
                 })
             },
             handleRowDelete(index, row) {
@@ -162,23 +148,19 @@
                 }).then(() => {
 
                     this.axios.post('notice/destory', {id: row.id}).then((response) => {
-                        console.log(response.data)
-                        if (response.data.success) {
+                        if (response.success) {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
                             });
-
                             this.getList();
                         }
                     })
-
-
                 });
             },
             getList() {
                 this.axios.get('notice').then((response) => {
-                    this.tableData = response.data.data;
+                    this.tableData = response.data;
                 })
             }
         },
@@ -191,5 +173,12 @@
 </script>
 
 <style scoped>
-
+    .page-container {
+        background-color: white;
+        padding: 16px;
+    }
+    .table-tools {
+		text-align: right;
+		margin-bottom: 8px;
+	}
 </style>

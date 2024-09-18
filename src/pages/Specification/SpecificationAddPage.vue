@@ -1,37 +1,26 @@
 <template>
-    <div class="content-page">
-        <div class="content-nav">
-            <el-breadcrumb class="breadcrumb" separator="/">
-                <el-breadcrumb-item :to="{ name: 'nature' }">商品设置</el-breadcrumb-item>
-                <el-breadcrumb-item>{{infoForm.id ? '编辑型号' : '添加型号'}}</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div class="operation-nav">
-                <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
-            </div>
+    <div class="page-container">
+        <div >
+            <el-button type="primary" size="small" @click="goBackPage" icon="arrow-left">返回列表</el-button>
         </div>
-        <div class="content-main">
-            <div class="form-table-box">
-                <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
-                    <el-form-item label="分类名称" prop="name">
-                        <el-input v-model="infoForm.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="排序">
-                        <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button v-if="infoForm.id > 0" type="primary" @click="updateSpec">确定保存</el-button>
-                        <el-button v-else type="primary" @click="addSpec">确定添加</el-button>
-                        <el-button v-if="infoForm.id > 0" type="danger" @click="specDelete">删除</el-button>
-                        <el-button @click="goBackPage">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-        </div>
+        <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
+            <el-form-item label="分类名称" prop="name">
+                <el-input v-model="infoForm.name"></el-input>
+            </el-form-item>
+            <el-form-item label="排序">
+                <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
+            </el-form-item>
+            <el-form-item>
+                <el-button v-if="infoForm.id > 0" type="primary" @click="updateSpec">确定保存</el-button>
+                <el-button v-else type="primary" @click="addSpec">确定添加</el-button>
+                <el-button v-if="infoForm.id > 0" type="danger" @click="specDelete">删除</el-button>
+                <el-button @click="goBackPage">取消</el-button>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
 <script>
-    import api from '@/common/api';
     export default {
         data() {
             return {
@@ -56,7 +45,7 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('specification/add', info).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '添加成功!'
@@ -83,7 +72,7 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('specification/update', info).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功!'
@@ -108,8 +97,7 @@
                     type: 'warning'
                 }).then(() => {
                     this.axios.post('specification/delete', {id: row.id}).then((response) => {
-                        console.log(response.data)
-                        if (response.data.errno === 0) {
+                        if (response.success) {
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
@@ -139,9 +127,12 @@
                 this.axios.post('specification/detail', {
                         id: that.infoForm.id
                 }).then((response) => {
-                    let resInfo = response.data.data;
-                    console.log(resInfo);
-                    that.infoForm = resInfo;
+                    if (response.success) {
+                        let resInfo = response.data;
+                        console.log(resInfo);
+                        that.infoForm = resInfo;
+                    }
+
                 })
             }
         },
@@ -156,35 +147,13 @@
 </script>
 
 <style scoped>
-    .image-uploader {
-        height: 105px;
-    }
+	.table-tools {
+		text-align: right;
+		margin-bottom: 8px;
+	}
 
-    .image-uploader .el-upload {
-        border: 1px solid #d9d9d9;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .image-uploader .el-upload:hover {
-        border-color: #20a0ff;
-    }
-
-    .image-uploader .image-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        min-width: 105px;
-        height: 105px;
-        line-height: 105px;
-        text-align: center;
-    }
-
-    .image-show {
-        background-color: #f8f8f8;
-        min-width: 105px;
-        height: 105px;
-        display: block;
-    }
-
+    .page-container {
+		background-color: white;
+		padding: 16px;
+	}
 </style>

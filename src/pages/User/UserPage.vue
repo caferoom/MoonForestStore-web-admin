@@ -81,8 +81,6 @@ export default {
 		},
 		handlePageChange(val) {
 			this.page = val;
-			//保存到localStorage
-			localStorage.setItem('userPage', this.page)
 			this.getList()
 		},
 		handleRowEdit(index, row) {
@@ -122,11 +120,11 @@ export default {
                     nickname: this.filterForm.nickname
 				}
 			}).then((response) => {
-                console.log(response.data);
-                console.log(response);
-                this.tableData = response.data.data.userData.data;
-                this.page = response.data.data.userData.currentPage;
-                this.total = response.data.data.userData.count;
+				if (response.success) {
+                this.tableData = response.data.userData.data;
+                this.page = response.data.userData.currentPage;
+                this.total = response.data.userData.count;
+				}
 			})
             if(!this.loginInfo){
                 this.loginInfo = JSON.parse(window.localStorage.getItem('userInfo') || null);
@@ -138,12 +136,6 @@ export default {
 
 	},
 	mounted() {
-		let thePage = localStorage.getItem('userPage');
-        if(thePage == null){
-            thePage = 1;
-        }
-		this.page = Number(thePage);
-        console.log(this.page);
 		this.getList();
 	}
 }

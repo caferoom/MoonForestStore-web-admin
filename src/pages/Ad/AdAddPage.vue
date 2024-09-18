@@ -6,7 +6,6 @@
                 <el-breadcrumb-item>{{infoForm.id ? '编辑广告' : '添加广告'}}</el-breadcrumb-item>
             </el-breadcrumb>
             <div class="operation-nav">
-                <!--<el-button type="primary" @click="test" icon="arrow-left">test</el-button>-->
                 <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
             </div>
         </div>
@@ -159,15 +158,16 @@
 					formData.append('token', this.picData.token);
 					formData.append('key', fileName);
 					this.$http.post(this.qiniuZone, formData, config).then((res) => {
-						this.handleUploadImageSuccess(res.data)
+						this.handleUploadImageSuccess(res.fileUrl)
 					})
 				}).catch(function(err){
 					console.log(err)
 				})
 			},
 			handleUploadImageSuccess(res, file) {
-			    let url = this.url;
-			    this.infoForm.image_url = url + res.key;
+			    // let url = this.url;
+			    // this.infoForm.image_url = url + res.key;
+                this.infoForm.image_url = res;
 			},
             relateSelect(id) {
                 console.log(id);
@@ -176,13 +176,10 @@
             },
             relateGoodsClick() {
                 this.axios.post('ad/getallrelate', {id: this.infoForm.id}).then((response) => {
-                    if (response.data.success) {
-                        this.chooseRelateGoods = response.data.data
+                    if (response.success) {
+                        this.chooseRelateGoods = response.data
                     }
                 });
-            },
-            test() {
-                console.log(this.infoForm.end_time);
             },
             beforeAdRemove() {
                 return this.$confirm(`确定移除？`);
@@ -191,13 +188,20 @@
                 this.infoForm.image_url = '';
             },
             getQiniuToken() {
-                let that = this
-                this.axios.post('index/getQiniuToken').then((response) => {
-                    let resInfo = response.data.data;
-                    console.log(resInfo);
-                    that.picData.token = resInfo.token;
-                    that.url = resInfo.url;
-                })
+                // this.axios.post('index/getQiniuToken').then((response) => {
+                //     if (response.success) {
+                //         let resInfo = response.data;
+                //         this.picData.token = resInfo.token;
+                //         this.url = resInfo.url;
+                //     }
+                // })
+                this.axios.post("upload/getUploadToken").then((response) => {
+                    if (response.success) {
+                        let resInfo = response.data;
+                        this.picData.token = resInfo.token;
+                        this.url = resInfo.url;
+                    }
+                });
             },
             goBackPage() {
                 this.$router.go(-1);
@@ -234,17 +238,16 @@
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
                         this.axios.post('ad/store', this.infoForm).then((response) => {
-                            if (response.data.success) {
+                            if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
                                 });
                                 this.$router.go(-1);
                             } else {
-                                console.log("1111", response)
                                 this.$message({
                                     type: 'error',
-                                    message: response.data.message.message,
+                                    message: response.message.message,
                                 })
                             }
                         });
@@ -264,16 +267,17 @@
                         id: that.infoForm.id
                     }
                 }).then((response) => {
-                    let resInfo = response.data.data;
-                    resInfo.enabled = resInfo.enabled ? "1" : "0";
-                    that.infoForm = resInfo;
-                    that.infoForm.end_time = resInfo.end_time * 1000;
-                    let info = {
-                        name: resInfo.name,
-                        url: resInfo.image_url
-                    };
-                    this.fileList.push(info);
-                    console.log(this.infoForm);
+                    if (response.success) {
+                        let resInfo = response.data;
+                        resInfo.enabled = resInfo.enabled ? "1" : "0";
+                        that.infoForm = resInfo;
+                        that.infoForm.end_time = resInfo.end_time * 1000;
+                        let info = {
+                            name: resInfo.name,
+                            url: resInfo.image_url
+                        };
+                        this.fileList.push(info);
+                    }
                 })
             }
         },

@@ -7,7 +7,7 @@
 		</div>
 		<div class="content-main">
 			<div class="filter-box">
-				<el-form :inline="true" :model="filterForm" class="demo-form-inline">
+				<el-form :inline="true" :model="filterForm">
 					<el-form-item label="商品名称">
 						<el-input v-model="filterForm.name" placeholder="商品名称"></el-input>
 					</el-form-item>
@@ -38,8 +38,6 @@
 							<label>{{scope.row.is_delete == 1? '已删':''}}</label>
 						</template>
 					</el-table-column>
-
-
 				</el-table>
 			</div>
 			<div class="page-box">
@@ -66,12 +64,8 @@ export default {
 	methods: {
 		handlePageChange(val) {
 			this.page = val;
-			//保存到localStorage
-			localStorage.setItem('shopCartPage', this.page)
-			localStorage.setItem('shopCartFilterForm', JSON.stringify(this.filterForm));
 			this.getList()
 		},
-		
 		onSubmitFilter() {
 			this.page = 1
 			this.getList()
@@ -83,9 +77,11 @@ export default {
 					name: this.filterForm.name
 				}
 			}).then((response) => {
-                this.tableData = response.data.data.data
-                this.page = response.data.data.currentPage
-                this.total = response.data.data.count
+				if (response.success) {
+					this.tableData = response.data.data
+					this.page = response.data.currentPage
+					this.total = response.data.count
+				}
 			})
 		}
 	},

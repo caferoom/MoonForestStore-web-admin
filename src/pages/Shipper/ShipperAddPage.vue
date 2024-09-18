@@ -1,47 +1,37 @@
 <template>
-    <div class="content-page">
-        <div class="content-nav">
-            <el-breadcrumb class="breadcrumb" separator="/">
-                <el-breadcrumb-item :to="{ name: 'shipper_list'}">快递公司</el-breadcrumb-item>
-                <el-breadcrumb-item>{{infoForm.id ? '编辑快递公司' : '添加快递公司'}}</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div class="operation-nav">
-                <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
-            </div>
+	<div  class="page-container" >
+        <div>
+            <el-button type="primary" size="small" @click="goBackPage" icon="arrow-left">返回</el-button>
         </div>
-        <div class="content-main">
-            <div class="form-table-box">
-                <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
-                    <el-form-item label="名字" prop="name">
-                        <el-input v-model="infoForm.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="代号" prop="code">
-                        <el-input v-model="infoForm.code"></el-input>
-                    </el-form-item>
-                    <el-form-item label="客户编号">
-                        <el-input v-model="infoForm.CustomerName"></el-input>
-                        <div class="form-tips">打印电子面单，需要填写</div>
-                    </el-form-item>
-                    <el-form-item label="月结账号">
-                        <el-input v-model="infoForm.MonthCode"></el-input>
-						<div class="form-tips">打印电子面单，需要填写</div>
-                    </el-form-item>
-                    <el-form-item label="排序" prop="sort_order">
-                        <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmitInfo">确定保存</el-button>
-                        <el-button @click="goBackPage">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
+        <div class="form-table-box">
+            <el-form ref="infoForm" :rules="infoRules" :model="infoForm" label-width="120px">
+                <el-form-item label="名字" prop="name">
+                    <el-input v-model="infoForm.name"></el-input>
+                </el-form-item>
+                <el-form-item label="代号" prop="code">
+                    <el-input v-model="infoForm.code"></el-input>
+                </el-form-item>
+                <el-form-item label="客户编号">
+                    <el-input v-model="infoForm.CustomerName"></el-input>
+                    <div class="form-tips">打印电子面单，需要填写</div>
+                </el-form-item>
+                <el-form-item label="月结账号">
+                    <el-input v-model="infoForm.MonthCode"></el-input>
+                    <div class="form-tips">打印电子面单，需要填写</div>
+                </el-form-item>
+                <el-form-item label="排序" prop="sort_order">
+                    <el-input-number v-model="infoForm.sort_order" :min="1" :max="1000"></el-input-number>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmitInfo">确定保存</el-button>
+                    <el-button @click="goBackPage">取消</el-button>
+                </el-form-item>
+            </el-form>
         </div>
     </div>
 </template>
 
 <script>
-    import api from '@/common/api';
-
     export default {
         data() {
             return {
@@ -71,13 +61,13 @@
             onSubmitInfo() {
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('shipper/store', this.infoForm).then((response) => {
+                        this.axios.post('shipper/save', this.infoForm).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
                                     message: '保存成功'
                                 });
-                                this.$router.go(-1)
+                                this.$router.go(-1);
                             } else {
                                 this.$message({
                                     type: 'error',
@@ -91,19 +81,13 @@
                 });
             },
             getInfo() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-
                 //加载快递公司详情
-                let that = this
-                this.axios.get('shipper/info', {
+                this.axios.get('shipper/getDetailInfoById', {
                     params: {
-                        id: that.infoForm.id
+                        id: this.infoForm.id
                     }
                 }).then((response) => {
-                    let resInfo = response.data;
-                    that.infoForm = resInfo;
+                    this.infoForm = response.data;
                 })
             }
 
@@ -111,9 +95,21 @@
         components: {},
         mounted() {
             this.infoForm.id = this.$route.query.id || 0;
-            this.getInfo();
-            console.log(api)
+            if (this.infoForm.id > 0) {
+                this.getInfo();
+            }
         }
     }
 
 </script>
+
+<style scoped>
+    .header {
+        margin-bottom: 8px;
+    }
+
+    .page-container {
+        background-color: white;
+        padding: 16px;
+    }
+</style>

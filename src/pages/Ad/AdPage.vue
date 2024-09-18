@@ -1,17 +1,12 @@
 <template>
-	<div class="content-page">
-		<div class="content-nav">
-			<el-breadcrumb class="breadcrumb" separator="/">
-				<el-breadcrumb-item>广告列表</el-breadcrumb-item>
-			</el-breadcrumb>
-			<div class="operation-nav">
-				<router-link to="/dashboard/ad/add">
-					<el-button type="primary" icon="plus">添加广告</el-button>
-				</router-link>
-			</div>
-		</div>
+	<div class="page-container">
 		<div class="content-main">
 			<div class="form-table-box">
+				<div class="table-tools">
+					<router-link to="/dashboard/ad/add">
+						<el-button type="primary" size="small" icon="plus">添加广告</el-button>
+					</router-link>
+				</div>
 				<el-table :data="tableData" style="width: 100%" border stripe>
 					<el-table-column prop="id" label="ID" width="70px"></el-table-column>
                     <el-table-column prop="image_url" label="广告">
@@ -56,7 +51,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 
 export default {
@@ -71,12 +65,8 @@ export default {
 		}
 	},
 	methods: {
-        test(){
-            console.log(this.tableData);
-		},
         submitSort(index, row){
-            this.axios.post('ad/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {
-            })
+            this.axios.post('ad/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {})
         },
         changeStatus($event, para) {
             this.axios.get('ad/saleStatus', {
@@ -84,31 +74,24 @@ export default {
                     status: $event,
                     id: para
                 }
-            }).then((response) => {
-
-            })
+            }).then((response) => {})
         },
 		handlePageChange(val) {
 			this.page = val;
 			//保存到localStorage
-			localStorage.setItem('adPage', this.page)
-			localStorage.setItem('adFilterForm', JSON.stringify(this.filterForm));
 			this.getList()
 		},
 		handleRowEdit(index, row) {
 			this.$router.push({ name: 'ad_add', query: { id: row.id } })
 		},
 		handleRowDelete(index, row) {
-
 			this.$confirm('确定要删除?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-
 				this.axios.post('ad/destory', { id: row.id }).then((response) => {
-					console.log(response.data)
-					if (response.data.success) {
+					if (response.success) {
 						this.$message({
 							type: 'success',
 							message: '删除成功!'
@@ -117,8 +100,6 @@ export default {
 						this.getList();
 					}
 				})
-
-
 			});
 		},
 		onSubmitFilter() {
@@ -131,15 +112,13 @@ export default {
 					page: this.page,
 				}
 			}).then((response) => {
-                this.tableData = response.data.data.data
-                this.page = response.data.data.currentPage
-                this.total = response.data.data.count
+				if (response.success) {
+					this.tableData = response.data.data
+					this.page = response.data.currentPage
+					this.total = response.data.count
+				}
 			})
-			console.log(this.tableData);
 		}
-	},
-	components: {
-
 	},
 	mounted() {
 		this.getList();
@@ -149,5 +128,12 @@ export default {
 </script>
 
 <style scoped>
-
+    .page-container {
+        background-color: white;
+        padding: 16px;
+    }
+    .table-tools {
+		text-align: right;
+		margin-bottom: 8px;
+	}
 </style>
