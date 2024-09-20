@@ -1347,11 +1347,9 @@
 
 <script>
 import VueBarcode from "../../../node_modules/vue-barcode";
-import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
 // import Table from "./components/table.vue";
 // Vue.component(VueBarcode.name, VueBarcode);
 
-// import { Button } from 'element-ui';
 export default {
   data() {
     return {
@@ -2005,7 +2003,6 @@ export default {
     },
   },
   components: {
-    ElButton,
     barcode: VueBarcode,
     // order_table: Table,
   },

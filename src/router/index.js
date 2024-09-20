@@ -1,21 +1,18 @@
-import Vue from "vue";
-import Router from "vue-router";
-
-Vue.use(Router);
+import { createRouter, createWebHistory } from 'vue-router';
 
 export const constantRoutes = [
   {
     path: "/login",
     name: "login",
-    component: () => import("@/pages/LoginPage"),
+    component: () => import("@/pages/LoginPage.vue"),
   },
   {
     path: "/order",
     name: "order",
-    component: () => import("@/pages/Order/OrderPage"),
+    component: () => import("@/pages/Order/OrderPage.vue"),
   },
   {
-    path: "detail",
+    path: "/detail",
     name: "order_detail",
     component: () => import("@/pages/Order/OrderDetailPage"),
   },
@@ -164,24 +161,14 @@ export const constantRoutes = [
     component: () => import("@/pages/Showset/ShowSetPage"),
   },
   {
-    path: "*",
+    path: '/:catchAll(.*)', // 使用带有正则表达式的参数
     redirect: "/welcome",
   },
 ];
 
-const createRouter = () =>
-  new Router({
-    mode: 'history',
-    scrollBehavior: () => ({ y: 0 }),
-    routes: constantRoutes,
-  });
-
-const router = createRouter();
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createRouter();
-  router.matcher = newRouter.matcher; // reset router
-}
+const router = createRouter({
+  history: createWebHistory(),
+  routes: constantRoutes,
+});
 
 export default router;

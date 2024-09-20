@@ -370,8 +370,6 @@
 </template>
 
 <script>
-// import ElButton from "../../../../node_modules/element-ui/packages/button/src/button.vue";
-import ElButton from "../../../node_modules/element-ui/packages/button/src/button.vue";
 
 export default {
   data() {
@@ -647,7 +645,6 @@ export default {
         });
     },
   },
-  components: { ElButton },
   mounted() {
     //            console.log(this.$route.query);
     this.infoForm.id = this.$route.query.id || 0;

@@ -67,7 +67,7 @@ export default {
     },
   },
   mounted() {
-    this.axios.post("admin/userInfo").then(res => {
+    this.$axios.post("admin/userInfo").then(res => {
         if (res.success) {
           setUserInfo(res.data);
         }

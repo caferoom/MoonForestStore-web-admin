@@ -5,8 +5,8 @@
       <transition name="router-fade" mode="out-in">
         <div>
           <el-breadcrumb class="breadcrumb"> 
-            <template v-for="(item, index) in breadcrumbItems">
-              <el-breadcrumb-item :key="index" :to="String(item.url).startsWith('/') ? {path: item.url} : null">{{ item.name }}</el-breadcrumb-item>
+            <template v-for="(item, index) in breadcrumbItems" :key="index">
+              <el-breadcrumb-item  :to="String(item.url).startsWith('/') ? {path: item.url} : null">{{ item.name }}</el-breadcrumb-item>
             </template>
           </el-breadcrumb>
           <router-view/>

@@ -1,57 +1,22 @@
-import Vue from 'vue'
+import { createApp } from 'vue';
 
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css'; // 引入 Element Plus 的样式
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
-
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css';
-
-import VueAxios from 'vue-axios'
-import Axios from 'axios'
-import api from './common/api'
-
-
-import '@/styles/index.scss' // global css
+import '@/style.css' // global css
 
 import App from './App'
 import store from './store'
 import router from './router'
+import axios from 'axios';
 
-Vue.use(ElementUI);
+const app = createApp(App);
 
-// Tips设置
-Vue.config.productionTip = false;
+app.use(router);
+app.use(store);
+app.use(ElementPlus);
 
-// 配置axios
-Vue.use(VueAxios, Axios);
-Axios.defaults.baseURL = api.rootUrl;
-Axios.interceptors.response.use(
-  response => response.data,
-  error => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        window.location.href = "/login";
-      } else {
-        const data = error.response.data;
-        const msg = `statusCode: ${data.statusCode} ${data.message.message}`;
-        Vue.prototype.$message.error(msg);
-      }
-    } else {
-      Vue.prototype.$message.error("网络错误，请检查您的网络并稍后重试");
-    }
+// 将 axios 挂载到全局
+app.config.globalProperties.$axios = axios;
 
-  }
-);
-Axios.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem('token') || '';
-    config.headers["Authorization"] = 'Bearer ' + token;
-    return config;
-  }
-);
-
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+app.mount("#app");
