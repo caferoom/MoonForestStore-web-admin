@@ -1,10 +1,5 @@
 <template>
 	<div class="content-page">
-		<div class="content-nav">
-			<el-breadcrumb class="breadcrumb" separator="/">
-				<el-breadcrumb-item>购物车列表</el-breadcrumb-item>
-			</el-breadcrumb>
-		</div>
 		<div class="content-main">
 			<div class="filter-box">
 				<el-form :inline="true" :model="filterForm">

@@ -168,7 +168,7 @@
     </div>
 </template>
 <script>
-    import api from '@/common/api';
+    import api from '@/common/request/api';
     import Clipboard from 'clipboard';
 
     export default {

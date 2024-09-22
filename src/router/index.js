@@ -1,167 +1,202 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
+
+export const workspaceBaseRoute = '/workspace';
+export const workSpaceRouteUrl = {
+  Dashboard: workspaceBaseRoute + "/dashboard", // 数据看板
+  Order: workspaceBaseRoute + "/order", // 订单
+  OrderDetail: workspaceBaseRoute + "/order/detail", // 订单详情
+  Goods: workspaceBaseRoute + "/goods", // 商品列表
+  GoodsAdd: workspaceBaseRoute + "/goods/add", // 商品
+  Nature: workspaceBaseRoute + "/nature", // ??
+  SpecificationDetail: workspaceBaseRoute + "/specification/detail", 
+  Category: workspaceBaseRoute + "/category",
+  CategoryAdd: workspaceBaseRoute + "/category/add",
+  User: workspaceBaseRoute + "/user",
+  UserAdd: workspaceBaseRoute + "/user/add",
+  Shipper: workspaceBaseRoute + "/shipper",
+  ShipperList: workspaceBaseRoute + "/shipper/list",
+  ShipperAdd: workspaceBaseRoute + "/shipper/add",
+  ShipperEdit: workspaceBaseRoute + "/shipper/edit",
+  Freight: workspaceBaseRoute + "/freight",
+  Except_area: workspaceBaseRoute + "/except_area",
+  Except_areaAdd: workspaceBaseRoute + "/except_area/add",
+  FreightAdd: workspaceBaseRoute + "/freight/add",
+  Notice: workspaceBaseRoute + "/notice",
+  Ad: workspaceBaseRoute + "/ad",
+  AdAdd: workspaceBaseRoute + "/ad/add",
+  Shopcart: workspaceBaseRoute + "/shopcart",
+  Keywords: workspaceBaseRoute + "/keywords",
+  KeywordsAdd: workspaceBaseRoute + "/keywords/add",
+  Goodsgalleryedit: workspaceBaseRoute + "/goodsgalleryedit",
+  Admin: workspaceBaseRoute + "/admin",
+  AdminAdd: workspaceBaseRoute + "/admin/add",
+  AdminEdit: workspaceBaseRoute + "/admin/edit",
+  SettingsShowSet: workspaceBaseRoute + "/settings/showset",
+};
+
 const routes = [
   // 包含边框菜单
   {  
-    path: '/workspace',
+    path: workspaceBaseRoute,
     component: () => import("@/components/Layout"),
     children: [
       {
-        path: "home",
-        name: "home",
+        path: workSpaceRouteUrl.Dashboard,
+        name: "dashboard",
         component: () => import("@/pages/Home"),
       },
       {
-        path: "order",
+        path: workSpaceRouteUrl.Order,
         name: "order",
         component: () => import("@/pages/Order/OrderPage.vue"),
       },
       {
-        path: "detail",
+        path: workSpaceRouteUrl.OrderDetail,
         name: "order_detail",
         component: () => import("@/pages/Order/OrderDetailPage"),
       },
       {
         path: "goods",
-        name: "goods",
+        name: workSpaceRouteUrl.Goods,
         component: () => import("@/pages/Goods/GoodsPage"),
       },
       {
-        path: "goods/add",
+        path: workSpaceRouteUrl.GoodsAdd,
         name: "goods_add",
         component: () => import("@/pages/Goods/GoodsAddPage"),
       },
       {
-        path: "nature",
+        path: workSpaceRouteUrl.Nature,
         name: "nature",
         component: () => import("@/pages/Nature/NaturePage"),
       },
       {
-        path: "specification/detail",
+        path: workSpaceRouteUrl.SpecificationDetail,
         name: "specification_detail",
         component: () =>
           import("@/pages/Specification/SpecificationAddPage"),
       },
       {
-        path: "category",
+        path: workSpaceRouteUrl.Category,
         name: "category",
         component: () => import("@/pages/Category/CategoryPage"),
       },
       {
-        path: "category/add",
+        path: workSpaceRouteUrl.CategoryAdd,
         name: "category_add",
         component: () => import("@/pages/Category/CategoryAddPage"),
       },
       {
-        path: "user",
+        path: workSpaceRouteUrl.User,
         name: "user",
         component: () => import("@/pages/User/UserPage"),
       },
       {
-        path: "user/add",
+        path: workSpaceRouteUrl.UserAdd,
         name: "user_add",
         component: () => import("@/pages/User/UserAddPage"),
       },
       {
-        path: "shipper",
+        path: workSpaceRouteUrl.Shipper,
         name: "shipper",
         component: () => import("@/pages/Shipper/ShipperPage"),
       },
       {
-        path: "shipper/list",
+        path: workSpaceRouteUrl.ShipperList,
         name: "shipper_list",
         component: () => import("@/pages/Shipper/ShipperListPage"),
       },
       {
-        path: "shipper/add",
+        path: workSpaceRouteUrl.ShipperAdd,
         name: "shipper_add",
         component: () => import("@/pages/Shipper/ShipperAddPage"),
       },
       {
-        path: "shipper/edit",
+        path: workSpaceRouteUrl.ShipperEdit,
         name: "shipper_edit",
         component: () => import("@/pages/Shipper/ShipperAddPage"),
       },
       {
-        path: "freight",
+        path: workSpaceRouteUrl.Freight,
         name: "freight",
         component: () => import("@/pages/Freight/FreightPage"),
       },
       {
-        path: "except_area",
+        path: workSpaceRouteUrl.Except_area,
         name: "except_area",
         component: () => import("@/pages/Freight/ExceptAreaPage"),
       },
       {
-        path: "except_area/add",
+        path: workSpaceRouteUrl.Except_areaAdd,
         name: "except_area_add",
         component: () => import("@/pages/Freight/ExceptAreaAddPage"),
       },
       {
-        path: "freight/add",
+        path: workSpaceRouteUrl.FreightAdd,
         name: "freight_add",
         component: () => import("@/pages/Freight/FreightAddPage"),
       },
       {
-        path: "notice",
+        path: workSpaceRouteUrl.Notice,
         name: "notice",
         component: () => import("@/pages/Settings/NoticePage"),
       },
       {
-        path: "ad",
+        path: workSpaceRouteUrl.Ad,
         name: "ad",
         component: () => import("@/pages/Ad/AdPage"),
       },
       {
-        path: "ad/add",
+        path: workSpaceRouteUrl.AdAdd,
         name: "ad_add",
         component: () => import("@/pages/Ad/AdAddPage"),
       },
       {
-        path: "shopcart",
+        path: workSpaceRouteUrl.Shopcart,
         name: "shopcart",
         component: () => import("@/pages/ShopCart/ShopCartPage"),
       },
       {
-        path: "keywords",
+        path: workSpaceRouteUrl.Keywords,
         name: "keywords",
         component: () => import("@/pages/Keywords/KeywordsPage"),
       },
       {
-        path: "keywords/add",
+        path: workSpaceRouteUrl.KeywordsAdd,
         name: "keywords_add",
         component: () => import("@/pages/Keywords/KeywordsAddPage"),
       },
       // 看上去没有转跳进入的地方
       {
-        path: "goodsgalleryedit",
+        path: workSpaceRouteUrl.Goodsgalleryedit,
         name: "goodsgalleryedit",
         component: () =>
           import("@/pages/GoodsGallery/GoodsGalleryEditPage"),
       },
       {
-        path: "admin",
+        path: workSpaceRouteUrl.Admin,
         name: "admin",
         component: () => import("@/pages/Admin/AdminPage"),
       },
       {
-        path: "admin/add",
+        path: workSpaceRouteUrl.AdminAdd,
         name: "admin_add",
         component: () => import("@/pages/Admin/AdminAddPage"),
       },
       {
-        path: "admin/edit",
+        path: workSpaceRouteUrl.AdminEdit,
         name: "admin_edit",
         component: () => import("@/pages/Admin/AdminAddPage"),
       },
       {
-        path: "settings/showset",
+        path: workSpaceRouteUrl.SettingsShowSet,
         name: "showset",
         component: () => import("@/pages/Showset/ShowSetPage"),
       },
       {
-        path: ':pathMatch([.* ])*',
-        redirect: to => ({ ...to, params: {}, name: 'home' })
+        path: ':pathMatch([.  ]*)*',
+        redirect: workSpaceRouteUrl.Dashboard,
       },
     ]
   },
@@ -171,15 +206,14 @@ const routes = [
     name: "login",
     component: () => import("@/pages/LoginPage"),
   },
+  // 兜底路由
   {
-    path: '/:pathMatch([.* ])*',
-    redirect: "/workspace",
+    path: '/:pathMatch(.*)*',
+    redirect: workspaceBaseRoute,
   },
 ];
 
-const router = createRouter({
+export const router = createRouter({
   history: createWebHistory(),
   routes: routes,
 });
-
-export default router;

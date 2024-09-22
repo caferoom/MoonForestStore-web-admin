@@ -18,7 +18,7 @@
       <el-menu-item v-for="item in menuItems" :index="item.index" :key="item.index" :disabled="item.disabled">
         <template #title>{{item.title}}</template>
       </el-menu-item>
-      <el-sub-menu>
+      <el-sub-menu index="personalSetting">
         <template #title><el-avatar src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" /><div class="username">特朗普</div></template>
           <el-menu-item disabled index="personalCenter">个人中心</el-menu-item>
           <el-menu-item index="exit">退出</el-menu-item>

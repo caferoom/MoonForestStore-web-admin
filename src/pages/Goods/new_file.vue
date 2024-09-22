@@ -166,7 +166,7 @@
 </template>
 
 <script>
-	import api from '@/common/api';
+	import api from '@/common/request/api';
 	import lrz from 'lrz'
 	import moment from 'moment'
 	import draggable from 'vuedraggable'

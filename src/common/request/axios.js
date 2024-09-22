@@ -10,6 +10,7 @@ Axios.interceptors.response.use(
   error => {
     if (error.response) {
       if (error.response.status === 401) {
+        localStorage.clear();
         window.location.href = "/login";
       } else {
         const data = error.response.data;
@@ -17,7 +18,7 @@ Axios.interceptors.response.use(
         ElMessage.error(msg);
       }
     } else {
-      ElMessage.error("网络错误，请检查您的网络并稍后重试");
+      ElMessage.error(error.message || "网络错误，请检查您的网络并稍后重试");
     }
     return Promise.reject(error);
   }

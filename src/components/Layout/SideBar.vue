@@ -1,7 +1,7 @@
 <template>
     <el-menu
       :unique-opened="true"
-      default-active="/home"
+      :default-active="route.path"
       class="el-menu-vertical"
       :router="true"
     >
@@ -31,6 +31,10 @@
 </template>
   
 <script lang="ts" setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute();
+
     // 定义入参
     defineProps({
         menuItems: {

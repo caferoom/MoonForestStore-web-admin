@@ -1,10 +1,13 @@
+import { workspaceBaseRoute, workSpaceRouteUrl } from "../router";
+
+
 export const workspaceMenuTree = [{
-  title: "后台主页",
-    path: "/home",
+  title: "数据看板",
+    path: workSpaceRouteUrl.Dashboard,
     icon: "el-icon-location",
   }, {
     title: "订单列表",
-    path: "/order",
+    path: workSpaceRouteUrl.Order,
     icon: "el-icon-location",
   }, {
     title: "商品管理",
@@ -13,28 +16,18 @@ export const workspaceMenuTree = [{
     children: [
       {
         title: "商品列表",
-        path: "/goods"
+        path: workSpaceRouteUrl.Goods,
       }, {
         title: "商品设置",
-        path: "/nature",
-        children: [{
-            hide: true,
-            title: "添加型号",
-            path: "/specification/detail",
-          }, {
-            hide: true,
-            title: "添加分类",
-            path: "/category/add",
-          }
-        ],
+        path: workSpaceRouteUrl.Nature,
       }]
   }, {
     title: "购物车",
-    path: "/shopcart",
+    path: workSpaceRouteUrl.Shopcart,
     icon: "el-icon-location",
   }, {
     title: "用户列表",
-    path: "/user",
+    path: workSpaceRouteUrl.User,
     icon: "el-icon-location",
   }, {
     title: "店铺设置",
@@ -43,68 +36,22 @@ export const workspaceMenuTree = [{
     children: [
       {
         title: "显示设置",
-        path: "/settings/showset",
+        path: workSpaceRouteUrl.SettingsShowSet,
       }, {
         title: "广告列表",
-        path: "/ad",
-        children: [{
-          hide: true,
-          title: "编辑广告",
-          path: "/ad/add"
-        }]  
+        path: workSpaceRouteUrl.Ad,
       }, {
         title: "公告设置",
-        path: "/notice",
+        path: workSpaceRouteUrl.Notice,
       }, {
         title: "运费模板",
-        path: "/freight",
-        children: [
-          {
-            hide: true,
-            title: "新增快递模板",
-            path: "/freight/add",
-          }, {
-            hide: true,
-            title: "新增偏远地区",
-            path: "/except_area/add",
-          }, {
-            hide: true,
-            title: "偏远地区列表",
-            path: "/except_area",
-          }
-        ],
+        path: workSpaceRouteUrl.Freight,
       }, {
         title: "快递设置",
-        path: "/shipper",
-        children: [
-          {
-            hide: true,
-            title: "快递列表",
-            path: "/shipper/list",
-          }, {
-            hide: true,
-            title: "新增快递",
-            path: "/shipper/add",
-          }, {
-            hide: true,
-            title: "编辑快递公司信息",
-            path: "/shipper/edit",
-          }
-        ],
+        path: workSpaceRouteUrl.Shipper,
       }, {
         title: "管理员设置",
-        path: "/admin",
-        children: [
-          {
-            hide: true,
-            title: "新增管理员",
-            path: "/admin/add",
-          }, {
-            hide: true,
-            title: "编辑管理员",
-            path: "/admin/edit",
-          }
-        ],
+        path: workSpaceRouteUrl.Admin,
       }
     ],
   }];

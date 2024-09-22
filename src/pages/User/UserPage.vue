@@ -69,7 +69,7 @@ export default {
 				name: ''
 			},
 			tableData: [],
-            loginInfo:null,
+            // loginInfo:null,
             username:''
 		}
 	},
@@ -93,7 +93,6 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-
 				this.$axios.post('user/destory', { id: row.id }).then((response) => {
 					console.log(response.data)
 					if (response.data.success) {
@@ -126,10 +125,10 @@ export default {
                 this.total = response.data.userData.count;
 				}
 			})
-            if(!this.loginInfo){
-                this.loginInfo = JSON.parse(window.localStorage.getItem('userInfo') || null);
-                this.username = this.loginInfo.username;
-            }
+            // if(!this.loginInfo){
+            //     this.loginInfo = JSON.parse(window.localStorage.getItem('userInfo') || null);
+            //     // this.username = this.loginInfo.username;
+            // }
 		}
 	},
 	components: {

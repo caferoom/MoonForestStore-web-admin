@@ -339,7 +339,7 @@
 </template>
 
 <script>
-// import api from "@/common/api";
+// import api from "@/common/request/api";
 // import lrz from "lrz";
 // import moment from "moment";
 // import 'quill/dist/quill.core.css';

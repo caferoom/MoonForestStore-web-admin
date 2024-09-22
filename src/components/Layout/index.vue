@@ -1,14 +1,20 @@
 <template>
-  <el-container>
-    <el-header><NavBar :menuItems="NavMenu" :defaultActive="defaultActive" @onItemClick="onNavBarClick" /></el-header>
-      <el-container>
-        <el-aside v-if="hasSideBar" width="200px">
+  <el-container class="layout-container-demo">
+    <el-header class="layout-header">
+      <NavBar :menuItems="NavMenu" :defaultActive="defaultActive" @onItemClick="onNavBarClick" />
+    </el-header>
+    <el-container class="container">
+      <el-aside v-if="hasSideBar" width="200px">
+        <el-scrollbar>
           <SideBar :menuItems="sideMenu" />
-        </el-aside>
-        <el-container>
-          <el-main>
+        </el-scrollbar>
+      </el-aside>
+      <el-container>
+        <el-main>
+          <el-scrollbar>
             <router-view />
-          </el-main>
+          </el-scrollbar>
+        </el-main>
         <el-footer>
           <Footer/>
         </el-footer>
@@ -43,5 +49,14 @@ import { ref } from "vue";
     sideMenu.value = NavMenu.find(menu => menu.index === e).children || [];
     hasSideBar.value = Boolean(sideMenu.value && sideMenu.value.length !== 0);
   };
-
 </script>
+
+<style>
+  /* .container {
+    height: calc(100% - 60px);
+  } */
+
+   .layout-header {
+    position: relative;
+   }
+</style>

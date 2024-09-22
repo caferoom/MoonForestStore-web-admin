@@ -7,7 +7,7 @@ import '@/style.css' // global css
 
 import App from './App'
 import store from './store'
-import router from './router'
+import { router } from './router'
 import axios from './common/request/axios';
 
 const app = createApp(App);
