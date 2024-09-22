@@ -86,14 +86,14 @@
         methods: {
             getAllRegion() {
                 let that = this;
-                this.axios.get('common/getAllRegion').then((response) => {
+                this.$axios.get('common/getAllRegion').then((response) => {
                     if (response.success) {
                         this.options = response.data;
                     }
                 })
             },
             changeStatus() {
-                this.axios.post('shipper/changeAutoStatus', {
+                this.$axios.post('shipper/changeAutoStatus', {
                     enable: this.infoForm.autoDelivery,
                 }).then((response) => {
                     if (response.success) {
@@ -118,7 +118,7 @@
                 this.infoForm.district_id = this.senderOptions[2];
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('shipper/storeShipperSettings', this.infoForm).then((response) => {
+                        this.$axios.post('shipper/storeShipperSettings', this.infoForm).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
@@ -138,7 +138,7 @@
                 });
             },
             getList() {
-                this.axios.get('shipper/usingDeliveryCompanyList')
+                this.$axios.get('shipper/usingDeliveryCompanyList')
                     .then((response) => {
                         if (response.success) {
                             this.tableData = response.data;
@@ -146,7 +146,7 @@
                 });
             },
             getSenderInfo() {
-                this.axios.get('shipper/getSenderInfo').then((response) => {
+                this.$axios.get('shipper/getSenderInfo').then((response) => {
                     if (response.success) {
                         this.infoForm = response.data;
                         this.senderOptions.push(

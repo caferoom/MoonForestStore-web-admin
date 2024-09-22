@@ -55,7 +55,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.axios.post('freight/remove', {id: row.id}).then((response) => {
+                    this.$axios.post('freight/remove', {id: row.id}).then((response) => {
                         if (response.success) {
                             this.$message({
                                 type: 'success',
@@ -67,7 +67,7 @@
                 });
             },
             getList() {
-                this.axios.get('freight/getAll').then((response) => {
+                this.$axios.get('freight/getAll').then((response) => {
                     if (response.success) {
                         this.tableData = response.data
                     }

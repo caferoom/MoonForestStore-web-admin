@@ -176,7 +176,7 @@
                 console.log('????');
             },
             getInfo() {
-                this.axios.get('overview/index',).then((response) => {
+                this.$axios.get('overview/index',).then((response) => {
                     this.infoData = response.data.data;
                 })
             },
@@ -201,7 +201,7 @@
                 }
             },
             getMainInfo(index) {
-                this.axios.get('overview/main', {
+                this.$axios.get('overview/main', {
                     params: {
                         pindex: index
                     }
@@ -222,7 +222,7 @@
             this.getMainInfo(0);
             if(!this.loginInfo){
                 this.loginInfo = JSON.parse(window.localStorage.getItem('userInfo') || null);
-                this.username = this.loginInfo.username;
+                this.username = this.loginInfo?.username;
             }
         },
 

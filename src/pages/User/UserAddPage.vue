@@ -236,7 +236,7 @@
         methods: {
             saveAddress() {
                 this.nowAddressData.addOptions = this.addOptions;
-                this.axios.post('user/saveaddress', this.nowAddressData).then((response) => {
+                this.$axios.post('user/saveaddress', this.nowAddressData).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -288,12 +288,12 @@
                 }
             },
             // submitNick(index, row) {
-            //     this.axios.post('user/updateInfo', {id: row.id, nickname: row.nickname}).then((response) => {
+            //     this.$axios.post('user/updateInfo', {id: row.id, nickname: row.nickname}).then((response) => {
 
             //     })
             // },
             submitName(index, row) {
-                this.axios.post('user/updateName', {id: row.id, name: row.name}).then((response) => {
+                this.$axios.post('user/updateName', {id: row.id, name: row.name}).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -308,7 +308,7 @@
                 })
             },
             submitMobile(index, row) {
-                this.axios.post('user/updateMobile', {id: row.id, mobile: row.mobile}).then((response) => {
+                this.$axios.post('user/updateMobile', {id: row.id, mobile: row.mobile}).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -348,7 +348,7 @@
                     return false
                 }
                 let that = this;
-                this.axios.get('user/datainfo', {
+                this.$axios.get('user/datainfo', {
                     params: {
                         id: that.infoForm.id
                     }
@@ -366,7 +366,7 @@
                     return false
                 }
                 let that = this;
-                this.axios.get('user/info', {
+                this.$axios.get('user/info', {
                     params: {
                         id: that.infoForm.id
                     }
@@ -383,7 +383,7 @@
                     return false
                 }
                 let that = this;
-                this.axios.get('user/order', {
+                this.$axios.get('user/order', {
                     params: {
                         id: that.infoForm.id,
                         page: this.page,
@@ -401,7 +401,7 @@
                     return false
                 }
                 let that = this;
-                this.axios.get('user/address', {
+                this.$axios.get('user/address', {
                     params: {
                         id: that.infoForm.id,
                         page: this.page,
@@ -420,7 +420,7 @@
                     return false
                 }
                 let that = this;
-                this.axios.get('user/cartdata', {
+                this.$axios.get('user/cartdata', {
                     params: {
                         id: that.infoForm.id,
                         page: this.page,
@@ -439,7 +439,7 @@
                     return false
                 }
                 let that = this
-                this.axios.get('user/foot', {
+                this.$axios.get('user/foot', {
                     params: {
                         id: that.infoForm.id,
                         page: this.page,
@@ -455,7 +455,7 @@
             },
             getAllRegion() {
                 let that = this;
-                this.axios.get('common/getAllRegion').then((response) => {
+                this.$axios.get('common/getAllRegion').then((response) => {
                     if (response.success) {
                         this.options = response.data;
                     }

@@ -44,7 +44,7 @@
                 }
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('specification/add', info).then((response) => {
+                        this.$axios.post('specification/add', info).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
@@ -71,7 +71,7 @@
                 }
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('specification/update', info).then((response) => {
+                        this.$axios.post('specification/update', info).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
@@ -96,7 +96,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.axios.post('specification/delete', {id: row.id}).then((response) => {
+                    this.$axios.post('specification/delete', {id: row.id}).then((response) => {
                         if (response.success) {
                             this.$message({
                                 type: 'success',
@@ -124,7 +124,7 @@
                     return false
                 }
                 let that = this
-                this.axios.post('specification/detail', {
+                this.$axios.post('specification/detail', {
                         id: that.infoForm.id
                 }).then((response) => {
                     if (response.success) {

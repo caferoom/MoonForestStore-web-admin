@@ -61,7 +61,7 @@
             onSubmitInfo() {
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('shipper/save', this.infoForm).then((response) => {
+                        this.$axios.post('shipper/save', this.infoForm).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
@@ -82,7 +82,7 @@
             },
             getInfo() {
                 //加载快递公司详情
-                this.axios.get('shipper/getDetailInfoById', {
+                this.$axios.get('shipper/getDetailInfoById', {
                     params: {
                         id: this.infoForm.id
                     }

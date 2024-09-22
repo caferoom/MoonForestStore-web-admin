@@ -71,7 +71,7 @@ export default {
 	},
 	methods: {
 		submitSort(index, row){
-		    this.axios.post('shipper/updateSort', { id: row.id, sort: row.sort_order }).then((response) => {
+		    this.$axios.post('shipper/updateSort', { id: row.id, sort: row.sort_order }).then((response) => {
 				if (!response.success) {
 					this.$message({
 						type: 'falied',
@@ -99,7 +99,7 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.axios.post('shipper/remove', { id: row.id }).then((response) => {
+				this.$axios.post('shipper/remove', { id: row.id }).then((response) => {
 					if (response.success) {
 						this.$message({
 							type: 'success',
@@ -115,7 +115,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('shipper/list', {
+			this.$axios.get('shipper/list', {
 				params: {
 					page: this.page,
 					name: this.filterForm.name
@@ -132,7 +132,7 @@ export default {
 			})
 		},
 		changeStatus($event, id) {
-		    this.axios.get('shipper/enabledStatus', {
+		    this.$axios.get('shipper/enabledStatus', {
 		        params: {
 		            enable: $event,
 		            id: id

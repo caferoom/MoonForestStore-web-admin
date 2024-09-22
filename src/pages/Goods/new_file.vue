@@ -313,7 +313,7 @@
 				let url = this.url;
 				this.infoForm.list_pic_url = url + res.key;
 				console.log(this.infoForm.list_pic_url);
-				this.axios.post('goods/uploadHttpsImage', {
+				this.$axios.post('goods/uploadHttpsImage', {
 					url: this.infoForm.list_pic_url
 				}).then((response) => {
 					let lastUrl = response.data.data;
@@ -390,7 +390,7 @@
 					})
 					return false;
 				}
-				this.axios.post('goods/checkSku', {
+				this.$axios.post('goods/checkSku', {
 					info: row
 				}).then((response) => {
 					if (response.data.errno === 100) {
@@ -408,7 +408,7 @@
 			},
 			getSpecData() {
 				let id = this.infoForm.id;
-				this.axios.post('specification/getGoodsSpec', {
+				this.$axios.post('specification/getGoodsSpec', {
 					id: id
 				}).then((response) => {
 					if (response.data.errno === 0) {
@@ -440,7 +440,7 @@
 			},
 			getQiniuToken() {
 				let that = this
-				this.axios.post('index/getQiniuToken').then((response) => {
+				this.$axios.post('index/getQiniuToken').then((response) => {
 					let resInfo = response.data.data;
 					that.picData.token = resInfo.token;
 					that.url = resInfo.url;
@@ -506,7 +506,7 @@
 			},
 			getGalleryList() {
 				let goodsId = this.infoForm.id;
-				this.axios.post('goods/getGalleryList', {
+				this.$axios.post('goods/getGalleryList', {
 					goodsId: goodsId
 				}).then((response) => {
 					this.gallery_list = response.data.data.galleryData;
@@ -555,7 +555,7 @@
 					cancelButtonText: '取消',
 					type: 'warning'
 				}).then(() => {
-					this.axios.post('goods/copygoods', {
+					this.$axios.post('goods/copygoods', {
 						id: this.infoForm.id
 					}).then((response) => {
 						if (response.data.errno === 0) {
@@ -605,7 +605,7 @@
 						}
 						this.infoForm.gallery = this.gallery_list;
 						// return false;
-						this.axios.post('goods/store', {
+						this.$axios.post('goods/store', {
 							info: this.infoForm,
 							specData: this.specData,
 							specValue: this.specValue,
@@ -672,7 +672,7 @@
 				}
 				//加载商品详情
 				let that = this
-				this.axios.get('goods/info', {
+				this.$axios.get('goods/info', {
 					params: {
 						id: that.infoForm.id
 					}
@@ -691,7 +691,7 @@
 			// 获取所有分类
 			getAllCategory() {
 				let that = this;
-				this.axios.get('goods/getAllCategory', {
+				this.$axios.get('goods/getAllCategory', {
 					params: {}
 				}).then((response) => {
 					that.options = response.data.data;
@@ -699,7 +699,7 @@
 			},
 			getAllSpecification() {
 				let that = this;
-				this.axios.get('goods/getAllSpecification').then((response) => {
+				this.$axios.get('goods/getAllSpecification').then((response) => {
 					let resInfo = response.data.data;
 					console.log(resInfo);
 					that.specOptionsList = resInfo;
@@ -707,7 +707,7 @@
 			},
 			getExpressData() {
 				let that = this
-				this.axios.get('goods/getExpressData', {
+				this.$axios.get('goods/getExpressData', {
 					params: {}
 				}).then((response) => {
 					let options = response.data.data;

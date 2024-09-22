@@ -166,7 +166,7 @@
         },
         methods: {
             getAll() {
-                this.axios.get('goods/all', {
+                this.$axios.get('goods/all', {
                     params: {
                         page: this.page,
 						size: this.size,
@@ -181,7 +181,7 @@
                 })
             },
             getOnSaleList() {
-                this.axios.get('goods/onsale', {
+                this.$axios.get('goods/onsale', {
                     params: {
                         page: this.page,
 						size: this.size
@@ -195,7 +195,7 @@
                 })
             },
             getOutList() {
-                this.axios.get('goods/out', {
+                this.$axios.get('goods/out', {
                     params: {
                         page: this.page,
 						size: this.size
@@ -209,7 +209,7 @@
                 })
             },
             getDropList() {
-                this.axios.get('goods/drop', {
+                this.$axios.get('goods/drop', {
                     params: {
                         page: this.page,
 						size: this.size
@@ -241,7 +241,7 @@
                     });
                     return false;
                 }
-                this.axios.post('goods/updatePrice', row).then((response) => {
+                this.$axios.post('goods/updatePrice', row).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -268,7 +268,7 @@
                     })
                     return false;
                 }
-                this.axios.post('goods/checkSku', {info: row}).then((response) => {
+                this.$axios.post('goods/checkSku', {info: row}).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -284,7 +284,7 @@
                 })
             },
             submitSort(index, row){
-                this.axios.post('goods/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {})
+                this.$axios.post('goods/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {})
             },
             handleClick(tab, event) {
                 this.tableData = [];
@@ -304,7 +304,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.axios.post('goods/destory', {id: row.id}).then((response) => {
+                    this.$axios.post('goods/destory', {id: row.id}).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -336,7 +336,7 @@
             clear(){
                 this.page = 1;
                 this.activeTab = Tabs.All;
-                this.axios.get('goods/all', {
+                this.$axios.get('goods/all', {
                     params: {
                         page: this.page,
                         name: ''
@@ -350,7 +350,7 @@
                 })
             },
             changeStatus($event, para) {
-                this.axios.get('goods/saleStatus', {
+                this.$axios.get('goods/saleStatus', {
                     params: {
                         status: $event,
                         id: para
@@ -359,7 +359,7 @@
                 })
             },
             changeProductStatus($event, para) {
-                this.axios.get('goods/productStatus', {
+                this.$axios.get('goods/productStatus', {
                     params: {
                         status: $event,
                         id: para
@@ -368,7 +368,7 @@
                 })
             },
             changeShowStatus($event, para) {
-                this.axios.get('goods/indexShowStatus', {
+                this.$axios.get('goods/indexShowStatus', {
                     params: {
                         status: $event,
                         id: para

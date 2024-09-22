@@ -211,7 +211,7 @@
                 }
             },
             priceChangeConfirm() {
-                this.axios.get('order/orderPrice', {
+                this.$axios.get('order/orderPrice', {
                     params: {
                         orderSn: this.order_sn,
                         goodsPrice: this.orderInfo.goods_price,
@@ -224,7 +224,7 @@
 
             },
             getOrderInfo(sn) {
-                this.axios.get('order/detail', {
+                this.$axios.get('order/detail', {
                     params: {
                         orderSn: this.order_sn,
                     }
@@ -296,13 +296,13 @@
                 }
             },
             getDeliveyInfo() {
-                this.axios.get('delivery').then((response) => {
+                this.$axios.get('delivery').then((response) => {
                     this.deliveryCom = response.data.data;
                     console.log(this.deliveryCom);
                 })
             },
             confirm() {
-                this.axios.get('order/orderpack', {
+                this.$axios.get('order/orderpack', {
                     params: {
                         orderSn: this.order_sn,
                     }
@@ -316,7 +316,7 @@
                 console.log(this.order_sn);
                 console.log(this.nowDeliveryId);
                 console.log(this.dform.method);
-                this.axios.get('order/orderDelivery', {
+                this.$axios.get('order/orderDelivery', {
                     params: {
                         orderSn: this.order_sn,
                         shipper: this.nowDeliveryId,
@@ -332,7 +332,7 @@
             },
             getList() {
                 console.log(this.order_status);
-                this.axios.get('order', {
+                this.$axios.get('order', {
                     params: {
                         page: this.page,
                         orderSn: this.filterForm.order_sn,

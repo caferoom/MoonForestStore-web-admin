@@ -175,7 +175,7 @@
                 this.related_pop = false;
             },
             relateGoodsClick() {
-                this.axios.post('ad/getallrelate', {id: this.infoForm.id}).then((response) => {
+                this.$axios.post('ad/getallrelate', {id: this.infoForm.id}).then((response) => {
                     if (response.success) {
                         this.chooseRelateGoods = response.data
                     }
@@ -188,14 +188,14 @@
                 this.infoForm.image_url = '';
             },
             getQiniuToken() {
-                // this.axios.post('index/getQiniuToken').then((response) => {
+                // this.$axios.post('index/getQiniuToken').then((response) => {
                 //     if (response.success) {
                 //         let resInfo = response.data;
                 //         this.picData.token = resInfo.token;
                 //         this.url = resInfo.url;
                 //     }
                 // })
-                this.axios.post("upload/getUploadToken").then((response) => {
+                this.$axios.post("upload/getUploadToken").then((response) => {
                     if (response.success) {
                         let resInfo = response.data;
                         this.picData.token = resInfo.token;
@@ -237,7 +237,7 @@
                 }
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('ad/store', this.infoForm).then((response) => {
+                        this.$axios.post('ad/store', this.infoForm).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
@@ -262,7 +262,7 @@
                 }
                 //加载广告详情
                 let that = this
-                this.axios.get('ad/info', {
+                this.$axios.get('ad/info', {
                     params: {
                         id: that.infoForm.id
                     }

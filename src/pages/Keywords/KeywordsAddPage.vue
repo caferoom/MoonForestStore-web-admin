@@ -57,7 +57,7 @@
       onSubmitInfo() {
         this.$refs['infoForm'].validate((valid) => {
           if (valid) {
-            this.axios.post('keywords/store', this.infoForm).then((response) => {
+            this.$axios.post('keywords/store', this.infoForm).then((response) => {
               if (response.data.errno === 0) {
                 this.$message({
                   type: 'success',
@@ -83,7 +83,7 @@
 
         //加载热门搜索详情
         let that = this
-        this.axios.get('keywords/info', {
+        this.$axios.get('keywords/info', {
           params: {
             id: that.infoForm.id
           }

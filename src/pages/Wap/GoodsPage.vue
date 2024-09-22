@@ -61,7 +61,7 @@
         components: {},
         methods: {
             submit(index, row) {
-                this.axios.post('wap/updatePrice', {
+                this.$axios.post('wap/updatePrice', {
                     id: row.goods_id,
                     sn: row.goods_sn,
                     price: row.retail_price
@@ -70,7 +70,7 @@
                 })
             },
             changeStatus($event, para) {
-                this.axios.get('goods/saleStatus', {
+                this.$axios.get('goods/saleStatus', {
                     params: {
                         status: $event,
                         id: para
@@ -104,19 +104,19 @@
                 }
             },
 //            getList() {
-//                this.axios.get('wap').then((response) => {
+//                this.$axios.get('wap').then((response) => {
 //                    console.log(response.data)
 //                    this.tableData = response.data.data
 //                })
 //            },
             getOnSaleList() {
-                this.axios.get('wap/onsale').then((response) => {
+                this.$axios.get('wap/onsale').then((response) => {
                     console.log(response.data)
                     this.tableData = response.data.data
                 })
             },
             getOutSaleList() {
-                this.axios.get('wap/drop').then((response) => {
+                this.$axios.get('wap/drop').then((response) => {
                     console.log(response.data)
                     this.tableData = response.data.data
                 })

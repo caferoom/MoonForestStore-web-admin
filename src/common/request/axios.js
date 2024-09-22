@@ -1,7 +1,9 @@
 import Axios from 'axios';
+import api from './api';
+import { ElMessage } from "element-plus";
 
 // 配置axios
-Axios.defaults.baseURL = api.rootUrl;
+Axios.defaults.baseURL = api.baseUrl;
 
 Axios.interceptors.response.use(
   response => response.data,

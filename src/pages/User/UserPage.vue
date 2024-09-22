@@ -75,7 +75,7 @@ export default {
 	},
 	methods: {
         submitNick(index, row){
-            this.axios.post('user/updateInfo', { id: row.id,nickname:row.nickname }).then((response) => {
+            this.$axios.post('user/updateInfo', { id: row.id,nickname:row.nickname }).then((response) => {
 
             })
 		},
@@ -94,7 +94,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 
-				this.axios.post('user/destory', { id: row.id }).then((response) => {
+				this.$axios.post('user/destory', { id: row.id }).then((response) => {
 					console.log(response.data)
 					if (response.data.success) {
 						this.$message({
@@ -114,7 +114,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('user', {
+			this.$axios.get('user', {
 				params: {
 					page: this.page,
                     nickname: this.filterForm.nickname

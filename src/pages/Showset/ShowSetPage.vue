@@ -69,7 +69,7 @@
             onSubmitInfo() {
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('store/showsetStore', this.infoForm).then((response) => {
+                        this.$axios.post('store/showsetStore', this.infoForm).then((response) => {
                             if (response.success) {
                                 this.$message({
                                     type: 'success',
@@ -94,7 +94,7 @@
                 }
                 //加载优惠券详情
                 let that = this
-                this.axios.get('store/showset').then((response) => {
+                this.$axios.get('store/showset').then((response) => {
                     let resInfo = response.data;
                     that.infoForm = resInfo;
                 })

@@ -77,7 +77,7 @@
                     })
                     return false;
                 }
-                this.axios.post('notice/update', this.noticeData).then((response) => {
+                this.$axios.post('notice/update', this.noticeData).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -109,7 +109,7 @@
                     })
                     return false;
                 }
-                this.axios.post('notice/add', this.noticeData).then((response) => {
+                this.$axios.post('notice/add', this.noticeData).then((response) => {
                     if (response.success) {
                         this.$message({
                             type: 'success',
@@ -137,7 +137,7 @@
                 this.is_add = false;
             },
             submitContent(index, row) {
-                this.axios.post('notice/updateContent', {id: row.id, content: row.content}).then((response) => {
+                this.$axios.post('notice/updateContent', {id: row.id, content: row.content}).then((response) => {
                 })
             },
             handleRowDelete(index, row) {
@@ -147,7 +147,7 @@
                     type: 'warning'
                 }).then(() => {
 
-                    this.axios.post('notice/destory', {id: row.id}).then((response) => {
+                    this.$axios.post('notice/destory', {id: row.id}).then((response) => {
                         if (response.success) {
                             this.$message({
                                 type: 'success',
@@ -159,7 +159,7 @@
                 });
             },
             getList() {
-                this.axios.get('notice').then((response) => {
+                this.$axios.get('notice').then((response) => {
                     this.tableData = response.data;
                 })
             }

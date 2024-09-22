@@ -1,127 +1,110 @@
-export const menuTree = [{
-    name: "后台主页",
-    url: "/welcome",
+export const workspaceMenuTree = [{
+  title: "后台主页",
+    path: "/home",
     icon: "el-icon-location",
   }, {
-    name: "订单列表",
-    url: "/order",
+    title: "订单列表",
+    path: "/order",
     icon: "el-icon-location",
   }, {
-    name: "商品管理",
+    title: "商品管理",
     icon: "el-icon-location",
-    url: "goodsMgr",
-    children: [{
-      name: "商品列表",
-      url: "/goods"
-    }, {
-      name: "商品设置",
-      url: "/nature",
-      children: [{
-        hide: true,
-        name: "添加型号",
-        url: "/specification/detail",
-      }, {
-        
-        hide: true,
-        name: "添加分类",
-        url: "/category/add",
-      }],
-    }]
-  }, {
-    name: "购物车",
-    url: "/shopcart",
-    icon: "el-icon-location",
-  }, {
-    name: "用户列表",
-    url: "/user",
-    icon: "el-icon-location",
-  }, {
-    name: "店铺设置",
-    icon: "el-icon-location",
-    url: "settings",
+    path: "goodsMgr",
     children: [
       {
-      name: "显示设置",
-      url: "/settings/showset",
+        title: "商品列表",
+        path: "/goods"
       }, {
-        name: "广告列表",
-        url: "/ad",
+        title: "商品设置",
+        path: "/nature",
+        children: [{
+            hide: true,
+            title: "添加型号",
+            path: "/specification/detail",
+          }, {
+            hide: true,
+            title: "添加分类",
+            path: "/category/add",
+          }
+        ],
+      }]
+  }, {
+    title: "购物车",
+    path: "/shopcart",
+    icon: "el-icon-location",
+  }, {
+    title: "用户列表",
+    path: "/user",
+    icon: "el-icon-location",
+  }, {
+    title: "店铺设置",
+    icon: "el-icon-location",
+    path: "settings",
+    children: [
+      {
+        title: "显示设置",
+        path: "/settings/showset",
+      }, {
+        title: "广告列表",
+        path: "/ad",
         children: [{
           hide: true,
-          name: "编辑广告",
-          url: "/ad/add"
+          title: "编辑广告",
+          path: "/ad/add"
         }]  
       }, {
-        name: "公告设置",
-        url: "/notice",
+        title: "公告设置",
+        path: "/notice",
       }, {
-        name: "运费模板",
-        url: "/freight",
+        title: "运费模板",
+        path: "/freight",
         children: [
           {
             hide: true,
-            name: "新增快递模板",
-            url: "/freight/add",
+            title: "新增快递模板",
+            path: "/freight/add",
           }, {
             hide: true,
-            name: "新增偏远地区",
-            url: "/except_area/add",
+            title: "新增偏远地区",
+            path: "/except_area/add",
           }, {
             hide: true,
-            name: "偏远地区列表",
-            url: "/except_area",
+            title: "偏远地区列表",
+            path: "/except_area",
           }
         ],
       }, {
-        name: "快递设置",
-        url: "/shipper",
+        title: "快递设置",
+        path: "/shipper",
         children: [
           {
             hide: true,
-            name: "快递列表",
-            url: "/shipper/list",
+            title: "快递列表",
+            path: "/shipper/list",
           }, {
             hide: true,
-            name: "新增快递",
-            url: "/shipper/add",
+            title: "新增快递",
+            path: "/shipper/add",
           }, {
             hide: true,
-            name: "编辑快递公司信息",
-            url: "/shipper/edit",
+            title: "编辑快递公司信息",
+            path: "/shipper/edit",
           }
         ],
       }, {
-        name: "管理员设置",
-        url: "/admin",
+        title: "管理员设置",
+        path: "/admin",
         children: [
           {
             hide: true,
-            name: "新增管理员",
-            url: "/admin/add",
+            title: "新增管理员",
+            path: "/admin/add",
           }, {
             hide: true,
-            name: "编辑管理员",
-            url: "/admin/edit",
+            title: "编辑管理员",
+            path: "/admin/edit",
           }
         ],
       }
     ],
   }];
-
-
-const flattenMenuTree = (routes) => {
-  const flatRoutes = [];
-
-  routes.forEach(route => {
-    const { children, ...others } = route;
-    flatRoutes.push({...others});
-
-    if (children) {
-      flatRoutes.push(...flattenMenuTree(children));
-    }
-  });
-
-  return flatRoutes;
-}
-
-export const flatRoutes = flattenMenuTree(menuTree);

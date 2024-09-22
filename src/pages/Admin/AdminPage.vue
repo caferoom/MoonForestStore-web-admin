@@ -47,7 +47,7 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.axios.post('admin/delete', { id: row.id }).then((response) => {
+				this.$axios.post('admin/delete', { id: row.id }).then((response) => {
 					if (response.success) {
 						this.$message({
 							type: 'success',
@@ -59,7 +59,7 @@ export default {
 			});
 		},
 		getList() {
-			this.axios.get('admin/list').then((response) => {
+			this.$axios.get('admin/list').then((response) => {
 				if (response.success) {
 					this.tableData = response.data;
 				}

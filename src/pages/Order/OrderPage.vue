@@ -1429,7 +1429,7 @@ export default {
     },
     getAllRegion() {
       let that = this;
-      this.axios.get("common/getAllRegion").then((response) => {
+      this.$axios.get("common/getAllRegion").then((response) => {
         this.options = response.data.data;
       });
     },
@@ -1446,7 +1446,7 @@ export default {
           return false;
         }
       }
-      this.axios
+      this.$axios
         .get("order/orderDelivery", {
           params: {
             orderId: this.order_id,
@@ -1462,13 +1462,13 @@ export default {
         });
     },
     getDeliveyInfo() {
-      this.axios.get("shipper/usingDeliveryCompanyList").then((response) => {
+      this.$axios.get("shipper/usingDeliveryCompanyList").then((response) => {
         this.deliveryCom = response.data.data;
       });
     },
     changeExpressValue(info) {
       if (this.expressType == 1) {
-        this.axios
+        this.$axios
           .post("order/saveExpressValueInfo", {
             express_value: info.express_value,
             id: info.id,
@@ -1489,7 +1489,7 @@ export default {
       }
     },
     confirm() {
-      this.axios
+      this.$axios
         .get("order/orderpack", {
           params: {
             orderId: this.order_id,
@@ -1501,7 +1501,7 @@ export default {
         });
     },
     changeRemarkInfo(info) {
-      this.axios
+      this.$axios
         .post("order/saveRemarkInfo", {
           remark: info.remark,
           id: info.id,
@@ -1523,7 +1523,7 @@ export default {
     changeInfo(info) {
       let id = info.id;
       let print_info = info.print_info;
-      this.axios
+      this.$axios
         .post("order/savePrintInfo", {
           print_info: print_info,
           id: id,
@@ -1543,7 +1543,7 @@ export default {
         });
     },
     changeMemo(id, text) {
-      this.axios
+      this.$axios
         .post("order/saveAdminMemo", {
           text: text,
           id: id,
@@ -1567,7 +1567,7 @@ export default {
       this.dialogFormVisible = false;
     },
     onPrintNum() {
-      this.axios
+      this.$axios
         .post(this.testApi, this.testData, {
           headers: {
             "Access-Control-Allow-Origin": "*",
@@ -1625,7 +1625,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        this.axios
+        this.$axios
           .post("order/destory", {
             id: row.id,
           })
@@ -1646,7 +1646,7 @@ export default {
       this.getList();
     },
     getList() {
-      this.axios
+      this.$axios
         .get("order", {
           params: {
             page: this.page,
@@ -1683,7 +1683,7 @@ export default {
     },
     rePrintExpress() {
       this.rePrintStatus = 0;
-      this.axios
+      this.$axios
         .get("order/rePrintExpress", {
           params: {
             orderId: this.order_id,
@@ -1699,7 +1699,7 @@ export default {
     },
     directPrintExpress() {
       this.rePrintStatus = 1;
-      this.axios
+      this.$axios
         .get("order/directPrintExpress", {
           params: {
             orderId: this.order_id,
@@ -1741,7 +1741,7 @@ export default {
     },
     checkExpressInfo() {
       this.getOrderInfo(this.order_id);
-      this.axios
+      this.$axios
         .get("order/checkExpress", {
           params: {
             orderId: this.order_id,
@@ -1758,7 +1758,7 @@ export default {
         });
     },
     receiveConfirm() {
-      this.axios
+      this.$axios
         .get("order/orderReceive", {
           params: {
             orderId: this.order_id,
@@ -1785,7 +1785,7 @@ export default {
       console.log(expressType);
       this.sender.senderOptions = this.senderOptions;
       this.receiver.receiveOptions = this.receiveOptions;
-      this.axios
+      this.$axios
         .post("order/getMianExpress", {
           orderId: this.orderInfo.id,
           sender: this.sender,
@@ -1822,14 +1822,14 @@ export default {
           // newWindow.print();   //打印当前窗口
         });
       // console.log('这里进来了');
-      // this.axios.post('order/getPrintTest').then((response) => {
+      // this.$axios.post('order/getPrintTest').then((response) => {
       //     console.log(response);
       //     this.rawHtml = response.data.data;
       //     this.printMiandan = true;
       // });
     },
     deliveryConfirm(id) {
-      this.axios
+      this.$axios
         .post("order/goDelivery", {
           order_id: id,
         })
@@ -1849,7 +1849,7 @@ export default {
         });
     },
     printAndDeliveryConfirm() {
-      this.axios
+      this.$axios
         .post("order/goDelivery", {
           order_id: this.order_id,
         })
@@ -1875,7 +1875,7 @@ export default {
         });
     },
     printOnlyConfirm() {
-      this.axios
+      this.$axios
         .post("order/goPrintOnly", {
           order_id: this.order_id,
         })
@@ -1948,7 +1948,7 @@ export default {
         });
         return false;
       }
-      this.axios
+      this.$axios
         .get("order/orderPrice", {
           params: {
             orderId: this.order_id,
@@ -1963,13 +1963,13 @@ export default {
         });
     },
     getAutoStatus() {
-      this.axios.get("order/getAutoStatus").then((response) => {
+      this.$axios.get("order/getAutoStatus").then((response) => {
         let ele = response.data.data;
         ele == 1 ? (this.autoGoDelivery = true) : (this.autoGoDelivery = false);
       });
     },
     getOrderInfo(sn) {
-      this.axios
+      this.$axios
         .get("order/detail", {
           params: {
             orderId: this.order_id,

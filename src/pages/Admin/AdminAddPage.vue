@@ -74,7 +74,7 @@
                             delete user.password;
                         }
                         console.log("&&&", user);
-                        this.axios.post('admin/update', {
+                        this.$axios.post('admin/update', {
                             ...user,
                         }).then((response) => {
                             if (response.success) {
@@ -109,7 +109,7 @@
                 }
                 this.$refs['infoForm'].validate((valid) => {
                     if (valid) {
-                        this.axios.post('admin/create', {
+                        this.$axios.post('admin/create', {
                             username, password,
                         }).then((response) => {
                             if (response.success) {

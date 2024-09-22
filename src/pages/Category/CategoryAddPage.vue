@@ -155,7 +155,7 @@ export default {
   methods: {
     getQiniuToken() {
       let that = this;
-      this.axios.post("index/getQiniuToken").then((response) => {
+      this.$axios.post("index/getQiniuToken").then((response) => {
         if (response.success) {
           let resInfo = response.data;
           that.picData.token = resInfo.token;
@@ -172,7 +172,7 @@ export default {
     bannerRemove(file, fileList) {
       this.infoForm.img_url = "";
       let id = this.infoForm.id;
-      this.axios
+      this.$axios
         .post("category/deleteBannerImage", { id: id })
         .then((response) => {
           if (response.success) {
@@ -186,7 +186,7 @@ export default {
     iconRemove(file, fileList) {
       this.infoForm.icon_url = "";
       let id = this.infoForm.id;
-      this.axios
+      this.$axios
         .post("category/deleteIconImage", { id: id })
         .then((response) => {
           if (response.success) {
@@ -205,7 +205,7 @@ export default {
       console.log(this.infoForm.level);
       this.$refs["infoForm"].validate((valid) => {
         if (valid) {
-          this.axios.post("category/store", this.infoForm).then((response) => {
+          this.$axios.post("category/store", this.infoForm).then((response) => {
             if (response.success) {
               this.$message({
                 type: "success",
@@ -233,7 +233,7 @@ export default {
       this.infoForm.icon_url = url + res.key;
     },
     getTopCategory() {
-      this.axios.get("category/topCategory").then((response) => {
+      this.$axios.get("category/topCategory").then((response) => {
         if (response.success) {
           this.parentCategory = this.parentCategory.concat(response.data);
         }
@@ -245,7 +245,7 @@ export default {
       }
       //加载分类详情
       let that = this;
-      this.axios
+      this.$axios
         .get("category/info", {
           params: {
             id: that.infoForm.id,

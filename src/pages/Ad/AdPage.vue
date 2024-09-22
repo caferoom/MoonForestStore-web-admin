@@ -66,10 +66,10 @@ export default {
 	},
 	methods: {
         submitSort(index, row){
-            this.axios.post('ad/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {})
+            this.$axios.post('ad/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {})
         },
         changeStatus($event, para) {
-            this.axios.get('ad/saleStatus', {
+            this.$axios.get('ad/saleStatus', {
                 params: {
                     status: $event,
                     id: para
@@ -90,7 +90,7 @@ export default {
 				cancelButtonText: '取消',
 				type: 'warning'
 			}).then(() => {
-				this.axios.post('ad/destory', { id: row.id }).then((response) => {
+				this.$axios.post('ad/destory', { id: row.id }).then((response) => {
 					if (response.success) {
 						this.$message({
 							type: 'success',
@@ -107,7 +107,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('ad', {
+			this.$axios.get('ad', {
 				params: {
 					page: this.page,
 				}

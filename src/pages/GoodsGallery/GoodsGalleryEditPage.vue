@@ -107,7 +107,7 @@
 			//              console.log(this.infoForm);
 			//          },
 			//          onSubmitInfo() {
-			//              this.axios.post('goods/galleryEdit', this.infoForm).then((response) => {
+			//              this.$axios.post('goods/galleryEdit', this.infoForm).then((response) => {
 			//                  if (response.data.errno === 0) {
 			//                      this.$message({
 			//                          type: 'success',
@@ -130,7 +130,7 @@
 			//                  return false
 			//              }
 			//              let that = this
-			//              this.axios.get('goods/galleryList', {
+			//              this.$axios.get('goods/galleryList', {
 			//                  params: {
 			//                      id: that.infoForm.id
 			//                  }
@@ -146,7 +146,7 @@
 					return false
 				}
 				let that = this
-				this.axios.get('goods/galleryList', {
+				this.$axios.get('goods/galleryList', {
 					params: {
 						id: that.infoForm.id
 					}

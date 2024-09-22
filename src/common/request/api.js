@@ -1,7 +1,5 @@
-const rootUrl = "http://localhost:3000/"
-
 const api = {
-    rootUrl : rootUrl,
+    baseUrl : "http://localhost:3000/",
     qiniu: 'http://up-z0.qiniu.com',
     // 请根据自己创建的七牛的区域进行设置：
     // https://developer.qiniu.com/kodo/manual/1671/region-endpoint

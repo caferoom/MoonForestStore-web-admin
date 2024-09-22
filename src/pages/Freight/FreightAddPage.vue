@@ -339,7 +339,7 @@
                     }
                 }
 
-                this.axios.post('freight/saveTable', {
+                this.$axios.post('freight/saveTable', {
                     table: this.tableData,
                     defaultData: this.defaultData,
                     info: this.infoForm
@@ -400,7 +400,7 @@
                     }
                 }
 
-                this.axios.post('freight/addTable', {
+                this.$axios.post('freight/addTable', {
                     table: this.tableData,
                     defaultData: this.defaultData,
                     info: this.infoForm
@@ -470,7 +470,7 @@
                 this.specEditVisible = true;
             },
             getAllAreaData() {
-                this.axios.post('freight/getAllProvinces').then((response) => {
+                this.$axios.post('freight/getAllProvinces').then((response) => {
                     if (response.success) {
                         this.areaData = response.data;
                     }
@@ -479,7 +479,7 @@
             getInfo() {
                 if (this.infoForm.id) {
                     //加载快递公司详情
-                    this.axios.post('freight/freightdetail', {
+                    this.$axios.post('freight/freightdetail', {
                         id: this.infoForm.id
                     }).then((response) => {
                         if (response.success) {

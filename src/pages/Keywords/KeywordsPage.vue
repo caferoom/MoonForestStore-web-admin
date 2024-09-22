@@ -85,7 +85,7 @@ export default {
 				type: 'warning'
 			}).then(() => {
 
-				this.axios.post('keywords/destory', { id: row.id }).then((response) => {
+				this.$axios.post('keywords/destory', { id: row.id }).then((response) => {
 					console.log(response.data)
 					if (response.data.errno === 0) {
 						this.$message({
@@ -105,7 +105,7 @@ export default {
 			this.getList()
 		},
 		getList() {
-			this.axios.get('cart/keywords', {
+			this.$axios.get('cart/keywords', {
 				params: {
 					page: this.page,
 					name: this.filterForm.name

@@ -95,7 +95,7 @@
                             })
                             return false;
                         }
-                        this.axios.post('freight/saveExceptArea', {
+                        this.$axios.post('freight/saveExceptArea', {
                             id: this.infoForm.id,
                             area: this.tableData[0].area,
                             content: this.infoForm.content,
@@ -129,7 +129,7 @@
                             })
                             return false;
                         }
-                        this.axios.post('freight/addExceptArea', {
+                        this.$axios.post('freight/addExceptArea', {
                             area: this.tableData[0].area,
                             content: this.infoForm.content,
                         }).then((response) => {
@@ -155,7 +155,7 @@
                 this.$router.go(-1);
             },
             getAllAreaData() {
-                this.axios.post('freight/getAllProvinces').then((response) => {
+                this.$axios.post('freight/getAllProvinces').then((response) => {
                     if (response.success) {
                         this.areaData = response.data;
                     }
@@ -169,7 +169,7 @@
             getInfo() {
                 if (typeof this.infoForm.id === "number") {
                     //加载快递公司详情
-                    this.axios.post('freight/exceptAreaDetail', {
+                    this.$axios.post('freight/exceptAreaDetail', {
                         id: this.infoForm.id
                     }).then((response) => {
                         if (response.success) {

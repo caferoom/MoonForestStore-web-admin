@@ -86,7 +86,7 @@
         },
         methods: {
             changeShowStatus($event, para) {
-                this.axios.get('category/showStatus', {
+                this.$axios.get('category/showStatus', {
                     params: {
                         status: $event,
                         id: para
@@ -96,7 +96,7 @@
                 })
             },
             changeChannelStatus($event, para) {
-                this.axios.get('category/channelStatus', {
+                this.$axios.get('category/channelStatus', {
                     params: {
                         status: $event,
                         id: para
@@ -106,7 +106,7 @@
                 })
             },
             changeCategoryStatus($event, para) {
-                this.axios.get('category/categoryStatus', {
+                this.$axios.get('category/categoryStatus', {
                     params: {
                         status: $event,
                         id: para
@@ -116,7 +116,7 @@
                 })
             },
             submitSort(index, row){
-                this.axios.post('category/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {
+                this.$axios.post('category/updateSort', { id: row.id,sort:row.sort_order }).then((response) => {
                 })
             },
             handleRowEdit(index, row) {
@@ -129,7 +129,7 @@
                     type: 'warning'
                 }).then(() => {
 
-                    this.axios.post('category/destory', {id: row.id}).then((response) => {
+                    this.$axios.post('category/destory', {id: row.id}).then((response) => {
                         console.log(response.data)
                         if (response.data.errno === 0) {
                             this.$message({
@@ -154,7 +154,7 @@
                 this.getList()
             },
             getList() {
-                this.axios.get('category', {
+                this.$axios.get('category', {
                     params: {
                         page: this.page,
                         name: this.filterForm.name

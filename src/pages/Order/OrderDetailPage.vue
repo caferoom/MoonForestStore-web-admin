@@ -432,7 +432,7 @@ export default {
       this.statusVisible = true;
     },
     statusConfirm() {
-      this.axios
+      this.$axios
         .post("order/changeStatus", {
           status: this.statusValue,
           orderSn: this.infoForm.order_sn,
@@ -448,7 +448,7 @@ export default {
       if (pindex == 1) {
         if (this.is_finish == 0) {
           this.on_posting = 1;
-          this.axios
+          this.$axios
             .post("order/getOrderExpress", { orderId: this.infoForm.id })
             .then((response) => {
               this.expressData = response.data.data;
@@ -460,7 +460,7 @@ export default {
       }
     },
     PackageConfirm() {
-      this.axios
+      this.$axios
         .get("order/orderpack", {
           params: {
             orderSn: this.infoForm.order_sn,
@@ -488,7 +488,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.axios
+          this.$axios
             .post("order/goodsListDelete", this.goodsData)
             .then((response) => {
               if (response.data.errno === 0) {
@@ -525,7 +525,7 @@ export default {
         }
         this.goodsData.number = number;
         this.goodsData.addOrMinus = addOrMinus;
-        this.axios
+        this.$axios
           .post("order/saveGoodsList", this.goodsData)
           .then((response) => {
             //                        console.log(response.data);
@@ -541,7 +541,7 @@ export default {
       }
     },
     saveAdminMemo() {
-      this.axios
+      this.$axios
         .post("order/saveAdminMemo", {
           text: this.infoForm.admin_memo,
           id: this.infoForm.id,
@@ -566,7 +566,7 @@ export default {
     saveAddress() {
       this.nowAddressData.order_sn = this.infoForm.order_sn;
       this.nowAddressData.addOptions = this.addOptions;
-      this.axios
+      this.$axios
         .post("order/saveAddress", this.nowAddressData)
         .then((response) => {
           console.log("++---------------------------++");
@@ -604,7 +604,7 @@ export default {
     },
     getAllRegion() {
       let that = this;
-      this.axios.get("common/getAllRegion").then((response) => {
+      this.$axios.get("common/getAllRegion").then((response) => {
         this.options = response.data.data;
       });
     },
@@ -612,7 +612,7 @@ export default {
       if (this.infoForm.id <= 0) {
         return false;
       }
-      this.axios
+      this.$axios
         .get("order/detail", {
           params: {
             orderId: this.infoForm.id,
