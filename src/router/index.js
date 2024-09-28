@@ -44,7 +44,7 @@ const routes = [
       {
         path: workSpaceRouteUrl.Dashboard,
         name: "dashboard",
-        component: () => import("@/pages/Home"),
+        component: () => import("@/pages/DashBoard"),
       },
       {
         path: workSpaceRouteUrl.Order,

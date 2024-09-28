@@ -1,0 +1,8 @@
+.el-pagination, .is-background {
+    display: flex;
+    justify-content: end;
+}
+
+.el-pagination {
+    margin-top: 8px;
+}

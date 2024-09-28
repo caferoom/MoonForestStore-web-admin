@@ -4,11 +4,11 @@ import { workspaceBaseRoute, workSpaceRouteUrl } from "../router";
 export const workspaceMenuTree = [{
   title: "数据看板",
     path: workSpaceRouteUrl.Dashboard,
-    icon: "el-icon-location",
+    icon: "el-icon-Aim",
   }, {
     title: "订单列表",
     path: workSpaceRouteUrl.Order,
-    icon: "el-icon-location",
+    icon: "document",
   }, {
     title: "商品管理",
     icon: "el-icon-location",
@@ -26,9 +26,15 @@ export const workspaceMenuTree = [{
     path: workSpaceRouteUrl.Shopcart,
     icon: "el-icon-location",
   }, {
-    title: "用户列表",
-    path: workSpaceRouteUrl.User,
+    title: "客户管理",
+    path: "userManager",
     icon: "el-icon-location",
+    children: [
+      {
+        title: "客户列表",
+        path: workSpaceRouteUrl.User,
+      }
+    ],
   }, {
     title: "店铺设置",
     icon: "el-icon-location",

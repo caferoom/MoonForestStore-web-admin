@@ -1,23 +1,20 @@
 <template>
-  <el-container class="layout-container-demo">
+  <el-container class="layout-container">
     <el-header class="layout-header">
       <NavBar :menuItems="NavMenu" :defaultActive="defaultActive" @onItemClick="onNavBarClick" />
     </el-header>
-    <el-container class="container">
-      <el-aside v-if="hasSideBar" width="200px">
-        <el-scrollbar>
-          <SideBar :menuItems="sideMenu" />
-        </el-scrollbar>
-      </el-aside>
+    <el-container class="layout-body">
+      <el-scrollbar class="layout-side-bar">
+        <el-aside v-if="hasSideBar" width="200px">
+            <SideBar :menuItems="sideMenu" />
+        </el-aside>
+      </el-scrollbar>
       <el-container>
-        <el-main>
+        <el-main style="padding: 0px;">
           <el-scrollbar>
             <router-view />
           </el-scrollbar>
         </el-main>
-        <el-footer>
-          <Footer/>
-        </el-footer>
       </el-container>
     </el-container>
   </el-container>
@@ -26,7 +23,6 @@
 <script setup>
 import SideBar from './SideBar.vue';
 import NavBar from './NavBar.vue';
-import Footer from './Footer.vue';
 import { workspaceMenuTree } from "@/common/menu";
 import { ref } from "vue";
 
@@ -52,11 +48,27 @@ import { ref } from "vue";
 </script>
 
 <style>
-  /* .container {
-    height: calc(100% - 60px);
-  } */
 
+
+  .layout-container {
+    height: 100%;
+  }
+
+  .layout-body {
+    height: calc(100% - 60px);
+  }
    .layout-header {
-    position: relative;
+      position: sticky;
+      left: 0;
+      top: 0;
+   }
+
+   .layout-side-bar {
+    box-sizing:content-box;
+    border-right: 1px solid var(--el-menu-border-color);
+   }
+
+   .layout-side-bar .el-menu {
+    border-right: 0px;
    }
 </style>

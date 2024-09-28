@@ -65,15 +65,12 @@
             .then((res) => {
               this.loading = false;
               if (res.success) {
-                console.log(res.data);
                 localStorage.setItem("token", res.data.token);
                 localStorage.setItem(
                   "userInfo",
                   JSON.stringify(res.data.userInfo)
                 );
-                console.log(JSON.stringify(res.data.token));
-                console.log(JSON.stringify(res.data.userInfo));
-                this.$router.push({ name: "home" });
+                this.$router.push({ name: "dashboard" });
                 let sUserAgent = navigator.userAgent;
                 // todo 手机端
                 let mobileAgents = [
