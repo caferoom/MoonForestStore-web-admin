@@ -4,7 +4,7 @@
 			<el-breadcrumb-item>客户管理</el-breadcrumb-item>
 			<el-breadcrumb-item>客户列表</el-breadcrumb-item>
 		</el-breadcrumb>
-		<div class="main-page">
+		<div class="main-page" >
 			<div class="title">
 				<div class="page-title">客户列表</div>
 				<div class="page-title-sub">所有客户的基本信息，支持搜索、筛选和状态管理</div>
@@ -13,12 +13,12 @@
 			<el-form :inline="true" :model="filtersModel" ref="filterRef" label-position="top">
 				<el-row :gutter="16" style="width: 100%;">
 					<el-col :span="6">
-						<el-form-item label="用户昵称" span="6" style="width: 100%;">
-							<el-input v-model="filtersModel.nickname" placeholder="全部"></el-input>
+						<el-form-item label="用户昵称" span="6" style="width: 100%;" prop="nickname">
+							<el-input v-model="filtersModel.nickname" placeholder="全部" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
-						<el-form-item label="账户状态" style="width: 100%;">
+						<el-form-item label="账户状态" style="width: 100%;" prop="is_disabled">
 							<el-select
 								style="width: 100%;"
 								v-model="filtersModel.is_disabled"
@@ -33,17 +33,17 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
-						<el-form-item label="手机号码" style="width: 100%;">
-							<el-input v-model="filtersModel.mobile" placeholder="全部"></el-input>
+						<el-form-item label="手机号码" style="width: 100%;" prop="mobile">
+							<el-input v-model="filtersModel.mobile" placeholder="全部" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
-						<el-form-item label="客户ID" style="width: 100%;">
-							<el-input v-model="filtersModel.openid" placeholder="全部"></el-input>
+						<el-form-item label="客户ID" style="width: 100%;" prop="weixin_openid">
+							<el-input v-model="filtersModel.weixin_openid" placeholder="全部" clearable></el-input>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
-						<el-form-item label="最近登录时间" style="width: 100%;">
+						<el-form-item label="最近登录时间" style="width: 100%;" prop="lastLoginDateRange">
 							<el-date-picker
 								v-model="filtersModel.lastLoginDateRange"
 								type="daterange"
@@ -89,10 +89,10 @@
 						{{ dayjs(scope.row.register_time * 1000).format('YYYY-MM-DD HH:mm:ss') }}
 					</template>
 				</el-table-column>
-				<el-table-column label="操作" fixed="right" width="220px">
+				<el-table-column label="操作" fixed="right" width="160px">
 					<template v-slot="scope">
-						<el-button size="small" @click="handleRowEdit(scope.$index, scope.row)">详情</el-button>
-						<el-button v-if="scope.row.is_disabled" size="small" plain @click="handleRowDelete(scope.$index, scope.row)">启用</el-button>
+						<el-button size="small" type="primary" @click="handleRowEdit(scope.$index, scope.row)">详情</el-button>
+						<el-button v-if="scope.row.is_disabled" size="small" type="primary" plain @click="handleRowDelete(scope.$index, scope.row)">启用</el-button>
 						<el-button v-else size="small" type="danger" plain @click="handleRowDelete(scope.$index, scope.row)">禁用</el-button>
 					</template>
 				</el-table-column>
@@ -125,6 +125,9 @@
 	const filterRef = ref()
 	const filtersModel = reactive({
 		lastLoginDateRange: [],
+		nickname: "",
+		is_disabled: undefined,
+		weixin_openid: "",
 		mobile: "",
 	});
 
@@ -132,22 +135,22 @@
 	const tableData = ref([])
 
 	const handleRowEdit = (index, row) => {
-	router.push({ name: 'user_add', query: { id: row.id } })
+		router.push({ name: 'user_detail', query: { id: row.id } })
 	};
 
 	const handleRowDelete = (index, row) => {
-	ElMessageBox.confirm('确定要删除?', '提示', {
+	ElMessageBox.confirm(row.is_disabled ? "确定要启用吗": '确定要禁用吗?', '提示', {
 		confirmButtonText: '确定',
 		cancelButtonText: '取消',
 		type: 'warning'
 	})
 		.then(() => {
-		axios.post('user/destory', { id: row.id }).then((response) => {
-			if (response.data.success) {
+		axios.post('user/accountEnable', { id: row.id, enable: row.is_disabled }).then((response) => {
+			if (response.success) {
 			ElMessage({
 				type: 'success',
-				message: '删除成功!'
-			})
+				message: row.is_disabled  ? "启用成功!" : '禁用成功!'
+			});
 			getList()
 			}
 		})
@@ -161,7 +164,8 @@
 	};
 
 	const onReset = (formEl) => {
-		filterRef.value.resetFields()
+		filterRef.value.resetFields();
+		onSubmit();
 	};
 
 	const getList = () => {
@@ -198,10 +202,6 @@
 <style scoped>
 	.form-filter {
 		width: 100%;
-	}
-
-	.page-container {
-		padding: 16px 24px;
 	}
 
 	.main-page {

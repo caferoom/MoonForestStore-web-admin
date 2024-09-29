@@ -6,9 +6,15 @@ export const workspaceMenuTree = [{
     path: workSpaceRouteUrl.Dashboard,
     icon: "el-icon-Aim",
   }, {
-    title: "订单列表",
-    path: workSpaceRouteUrl.Order,
-    icon: "document",
+    title: "客户管理",
+    path: "userManager",
+    icon: "el-icon-location",
+    children: [
+      {
+        title: "客户列表",
+        path: workSpaceRouteUrl.User,
+      }
+    ],
   }, {
     title: "商品管理",
     icon: "el-icon-location",
@@ -22,19 +28,28 @@ export const workspaceMenuTree = [{
         path: workSpaceRouteUrl.Nature,
       }]
   }, {
+    title: "物流管理",
+    icon: "el-icon-location",
+    path: "shipperMgr",
+    children: [
+      {
+        title: "快递设置",
+        path: workSpaceRouteUrl.Shipper,
+      }
+    ],
+  },{
+    title: "订单管理",
+    icon: "",
+    path: "orderMgr",
+    children: [{
+      title: "订单列表",
+      path: workSpaceRouteUrl.Order,
+      icon: "document",
+    }],
+  }, {
     title: "购物车",
     path: workSpaceRouteUrl.Shopcart,
     icon: "el-icon-location",
-  }, {
-    title: "客户管理",
-    path: "userManager",
-    icon: "el-icon-location",
-    children: [
-      {
-        title: "客户列表",
-        path: workSpaceRouteUrl.User,
-      }
-    ],
   }, {
     title: "店铺设置",
     icon: "el-icon-location",
@@ -52,9 +67,6 @@ export const workspaceMenuTree = [{
       }, {
         title: "运费模板",
         path: workSpaceRouteUrl.Freight,
-      }, {
-        title: "快递设置",
-        path: workSpaceRouteUrl.Shipper,
       }, {
         title: "管理员设置",
         path: workSpaceRouteUrl.Admin,

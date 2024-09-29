@@ -1,67 +1,76 @@
 <template>
-    <div class="content-page">
-        <div class="content-nav">
-            <el-breadcrumb class="breadcrumb" separator="/">
-                <el-breadcrumb-item :to="{ name: 'user' }">会员管理</el-breadcrumb-item>
-                <el-breadcrumb-item>会员详情</el-breadcrumb-item>
-            </el-breadcrumb>
-            <div class="operation-nav">
-                <el-button type="primary" @click="goBackPage" icon="arrow-left">返回列表</el-button>
-            </div>
+    <div class="page-container">
+    <el-page-header @back="onBack">
+      <template #breadcrumb>
+        <el-breadcrumb separator="/">
+          <el-breadcrumb-item >客户管理</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ name: 'user' }">客户列表</el-breadcrumb-item>
+          <el-breadcrumb-item>客户详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </template>
+      <template #content>
+        <div class="flex items-center">
+          <span class="text-large font-600 mr-3"> 客户详情 </span>
+          <span
+            class="text-sm mr-2"
+            style="color: var(--el-text-color-regular)"
+          >
+            客户的详细信息，包括订单情况，收件地址等
+          </span>
         </div>
+      </template>
+      <el-descriptions :column="3" size="small" class="mt-4">
+        <el-descriptions-item label="用户ID">
+          kooriookami
+        </el-descriptions-item>
+        <el-descriptions-item label="昵称">
+          kooriookami
+        </el-descriptions-item>
+        <el-descriptions-item label="电话">
+          18100000000
+        </el-descriptions-item>
+        <el-descriptions-item label="注册时间">
+          18100000000
+        </el-descriptions-item>
+        <el-descriptions-item label="最近登录">
+          18100000000
+        </el-descriptions-item>
+        <el-descriptions-item label="城市">Suzhou</el-descriptions-item>
+        <el-descriptions-item label="性别">
+          <el-tag size="small">School</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="地址">
+          No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
+        </el-descriptions-item>
+      </el-descriptions>
+    </el-page-header>
+    <el-row :gutter="16">
+    <el-col :span="6">
+        <el-card>
+            <template #header>提交订单数</template>
+            <el-statistic :value="98500" suffix="单" />
+        </el-card>
+    </el-col>
+    <el-col :span="6">
+      <el-card>
+        <template #header>成交订单</template>
+        <el-statistic :value="98500" suffix="单" />
+      </el-card>
+    </el-col>
+    <el-col :span="6">
+        <el-card>
+            <template #header>消费金额</template>
+            <el-statistic :value="98500" suffix="元" />
+        </el-card>
+    </el-col>
+    <el-col :span="6">
+        <el-card>
+            <template #header>加入购物车</template>
+            <el-statistic :value="98500" suffix="件" />
+        </el-card>
+    </el-col>
+  </el-row>
         <div class="content-main">
-            <div class="form-table-box">
-                <el-table :data="userData" style="width: 100%" border stripe>
-                    <el-table-column prop="id" label="ID" width="60">
-                    </el-table-column>
-                    <el-table-column label="头像" width="80">
-                        <template slot-scope="scope">
-                            <img :src="scope.row.avatar" alt="" style="width: 50px;height: 50px">
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="nickname" width="80" label="昵称"></el-table-column>
-                    <el-table-column prop="name" width="110" label="姓名">
-                        <template slot-scope="scope">
-                            <el-input size="mini" v-model="scope.row.name" placeholder="姓名"
-                                      @blur="submitName(scope.$index, scope.row)"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="name" width="160" label="手机">
-                        <template slot-scope="scope">
-                            <el-input size="mini" v-model="scope.row.mobile" placeholder="手机"
-                                      @blur="submitMobile(scope.$index, scope.row)"></el-input>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="gender" label="性别" width="60">
-                        <template slot-scope="scope">
-                            {{ scope.row.gender == 2 ? '女' : '男' }}
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="register_time" label="注册时间" width="180"></el-table-column>
-                    <el-table-column prop="last_login_time" label="最近登录" width="180"></el-table-column>
-                </el-table>
-            </div>
-            <div class="block-box">
-                <div class="block">
-                    <div class="text">提交订单数:</div>
-                    <div class="num">{{this.dataInfo.orderSum}}笔</div>
-                </div>
-                <div class="block">
-                    <div class="text">成交订单:</div>
-                    <div class="num">{{this.dataInfo.orderDone}}笔</div>
-                </div>
-                <div class="block">
-                    <div class="text">消费金额:</div>
-                    <div class="num" v-if="this.dataInfo.orderMoney == null">0元</div>
-                    <div class="num" v-else>{{this.dataInfo.orderMoney}}元</div>
-                </div>
-                <div class="block">
-                    <div class="text">加入购物车:</div>
-                    <div class="num" v-if="this.dataInfo.cartSum == null">0件</div>
-                    <div class="num" v-else>{{this.dataInfo.cartSum}}件</div>
-
-                </div>
-            </div>
             <el-tabs v-model="activeName" @tab-click="handleClick">
                 <el-tab-pane label="订单" name="first"></el-tab-pane>
                 <el-tab-pane label="地址管理" name="second"></el-tab-pane>
@@ -199,12 +208,10 @@
 </template>
 
 <script>
-    import api from '@/common/request/api';
 
-    export default {
+export default {
         data() {
             return {
-                loginInfo: null,
                 page: 1,
                 total: 0,
                 filterForm: {
@@ -234,6 +241,9 @@
             }
         },
         methods: {
+            onBack() {
+                this.$router.go(-1);
+            },
             saveAddress() {
                 this.nowAddressData.addOptions = this.addOptions;
                 this.$axios.post('user/saveaddress', this.nowAddressData).then((response) => {
@@ -339,9 +349,6 @@
                 else if (pindex == 3) {
                     this.getFootData();
                 }
-            },
-            goBackPage() {
-                this.$router.go(-1);
             },
             datainfo() {
                 if (this.infoForm.id <= 0) {
@@ -470,15 +477,16 @@
             this.datainfo();
             this.getAllRegion();
             // this.root = api.rootUrl;
-            if (!this.loginInfo) {
-                this.loginInfo = JSON.parse(window.localStorage.getItem('userInfo') || null);
-            }
         }
     }
 
 </script>
 
 <style>
+    .content-main {
+        margin-top: 100px;
+    }
+
     .form-table-box {
         margin-bottom: 20px;
     }
@@ -752,4 +760,43 @@
         color: #222;
         font-size: 18px;
     }
+
+    :global(h2#card-usage ~ .example .example-showcase) {
+  background-color: var(--el-fill-color) !important;
+}
+
+.el-statistic {
+  --el-statistic-content-font-size: 28px;
+}
+
+
+.statistic-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--el-text-color-regular);
+  margin-top: 16px;
+}
+
+.statistic-footer .footer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statistic-footer .footer-item span:last-child {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.green {
+  color: var(--el-color-success);
+}
+.red {
+  color: var(--el-color-error);
+}
+
 </style>

@@ -13,7 +13,7 @@ export const workSpaceRouteUrl = {
   Category: workspaceBaseRoute + "/category",
   CategoryAdd: workspaceBaseRoute + "/category/add",
   User: workspaceBaseRoute + "/user",
-  UserAdd: workspaceBaseRoute + "/user/add",
+  UserDetail: workspaceBaseRoute + "/user/add",
   Shipper: workspaceBaseRoute + "/shipper",
   ShipperList: workspaceBaseRoute + "/shipper/list",
   ShipperAdd: workspaceBaseRoute + "/shipper/add",
@@ -93,9 +93,9 @@ const routes = [
         component: () => import("@/pages/User/UserPage"),
       },
       {
-        path: workSpaceRouteUrl.UserAdd,
-        name: "user_add",
-        component: () => import("@/pages/User/UserAddPage"),
+        path: workSpaceRouteUrl.UserDetail,
+        name: "user_detail",
+        component: () => import("@/pages/User/UserDetailPage"),
       },
       {
         path: workSpaceRouteUrl.Shipper,
