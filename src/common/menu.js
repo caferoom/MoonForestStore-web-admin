@@ -51,7 +51,7 @@ export const workspaceMenuTree = [{
     path: workSpaceRouteUrl.Shopcart,
     icon: "el-icon-location",
   }, {
-    title: "店铺设置",
+    title: "店铺管理",
     icon: "el-icon-location",
     path: "settings",
     children: [

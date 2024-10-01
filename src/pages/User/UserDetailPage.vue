@@ -71,13 +71,13 @@
     </el-col>
   </el-row>
         <div class="content-main">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tabs v-model="activeName">
                 <el-tab-pane label="订单" name="first"></el-tab-pane>
                 <el-tab-pane label="地址管理" name="second"></el-tab-pane>
                 <el-tab-pane label="购物车" name="third"></el-tab-pane>
                 <el-tab-pane label="足迹" name="fourth"></el-tab-pane>
             </el-tabs>
-            <div class="form-table-box" v-if="this.pIndex == 0">
+            <div class="form-table-box" v-if="activeName === 'first'">
                 <div v-for="item in orderData" class="list-wrap clearfix">
                     <div class="header clearfix">
                         <div class="status-text">{{item.order_status_text}}</div>
@@ -90,7 +90,6 @@
                         <div class="goods-num">共{{item.goodsCount}}件商品</div>
                     </div>
                     <div class="content-wrap clearfix">
-
                         <div class="left">
                             <div class="goods-list" v-for="iitem in item.goodsList">
 
@@ -118,7 +117,7 @@
                     </div>
                 </div>
             </div>
-            <div class="address-wrap" v-if="this.pIndex == 1">
+            <!-- <div class="address-wrap" v-if="activeName === 'second'">
                 <div class="coupon-w">
                     <div class="top">
                         <div class="l">
@@ -139,8 +138,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-table-box" v-if="this.pIndex == 2">
+            </div> -->
+            <AddressTable v-if="activeName === 'second'" :id="infoForm.id" />
+            <div class="form-table-box" v-if="activeName === 'third'">
                 <el-table :data="cartData" style="width: 100%" border stripe>
                     <el-table-column prop="goods_id" label="商品ID" width="100px"></el-table-column>
                     <el-table-column prop="list_pic_url" label="图片" width="70px">
@@ -160,7 +160,7 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <div class="form-table-box" v-if="this.pIndex == 3">
+            <div class="form-table-box" v-if="activeName === 'fourth'">
                 <el-table :data="footData" style="width: 100%" stripe>
                     <el-table-column prop="id" label="商品ID" width="100px"></el-table-column>
                     <el-table-column prop="list_pic_url" label="图片" width="70px">
@@ -208,18 +208,14 @@
 </template>
 
 <script>
+import AddressTable from "./components/address";
 
 export default {
         data() {
             return {
                 page: 1,
                 total: 0,
-                filterForm: {
-                    name: ''
-                },
-                tableData: [],
                 activeName: 'first',
-                pIndex: 0,
                 num: 0,
                 infoForm: {
                     id: 0
@@ -233,11 +229,7 @@ export default {
                 nowAddressData: {},
                 addOptions: [],
                 options: [],
-                addValue: {},
                 dataInfo: {},
-                data_money: [],
-                data_sum: [],
-                forlist: [11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0],
             }
         },
         methods: {
@@ -276,27 +268,6 @@ export default {
             viewDetail(index) {
                 this.$router.push({name: 'order_detail', query: {order_sn: index}})
             },
-            handleClick(tab, event) {
-                let pindex = tab._data.index;
-                this.page = 1;
-                this.total = 0
-                if (pindex == 0) {
-                    this.pIndex = 0;
-                    this.getOrder();
-                }
-                else if (pindex == 1) {
-                    this.pIndex = 1;
-                    this.getAddress();
-                }
-                else if (pindex == 2) {
-                    this.pIndex = 2;
-                    this.getCartData();
-                }
-                else if (pindex == 3) {
-                    this.pIndex = 3;
-                    this.getFootData();
-                }
-            },
             // submitNick(index, row) {
             //     this.$axios.post('user/updateInfo', {id: row.id, nickname: row.nickname}).then((response) => {
 
@@ -334,19 +305,16 @@ export default {
             },
             handlePageChange(val) {
                 this.page = val;
-                //保存到localStorage
-                localStorage.setItem('thisPage', this.page)
-                let pindex = this.pIndex;
-                if (pindex == 0) {
+                if (this.activeName === "first") {
                     this.getOrder();
                 }
-                else if (pindex == 1) {
+                else if (this.activeName === "second") {
                     this.getAddress();
                 }
-                else if (pindex == 2) {
+                else if (this.activeName === "third") {
                     this.getCartData();
                 }
-                else if (pindex == 3) {
+                else if (this.activeName === "fourth") {
                     this.getFootData();
                 }
             },
@@ -361,9 +329,7 @@ export default {
                     }
                 }).then((response) => {
                     if (response.success) {
-                        console.log("rrrr", response)
-                        let info = response.data;
-                        this.dataInfo = info;
+                        this.dataInfo = response.data;
                     }
 
                 })
@@ -379,8 +345,7 @@ export default {
                     }
                 }).then((response) => {
                     if (response.success) {
-                        let info = response.data;
-                        this.userData.push(info);
+                        this.userData.push(response.data);
                     }
 
                 })
@@ -461,7 +426,6 @@ export default {
                 })
             },
             getAllRegion() {
-                let that = this;
                 this.$axios.get('common/getAllRegion').then((response) => {
                     if (response.success) {
                         this.options = response.data;
@@ -469,14 +433,15 @@ export default {
                 })
             },
         },
-        components: {},
+        components: {
+            AddressTable,
+        },
         mounted() {
-            this.infoForm.id = this.$route.query.id || 0;
+            this.infoForm.id = Number(this.$route.query.id || 0);
             this.getInfo();
             this.getOrder();
             this.datainfo();
             this.getAllRegion();
-            // this.root = api.rootUrl;
         }
     }
 
@@ -767,36 +732,6 @@ export default {
 
 .el-statistic {
   --el-statistic-content-font-size: 28px;
-}
-
-
-.statistic-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  font-size: 12px;
-  color: var(--el-text-color-regular);
-  margin-top: 16px;
-}
-
-.statistic-footer .footer-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.statistic-footer .footer-item span:last-child {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 4px;
-}
-
-.green {
-  color: var(--el-color-success);
-}
-.red {
-  color: var(--el-color-error);
 }
 
 </style>
