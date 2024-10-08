@@ -139,11 +139,11 @@
 	};
 
 	const handleRowDelete = (index, row) => {
-	ElMessageBox.confirm(row.is_disabled ? "确定要启用吗": '确定要禁用吗?', '提示', {
-		confirmButtonText: '确定',
-		cancelButtonText: '取消',
-		type: 'warning'
-	})
+		ElMessageBox.confirm(row.is_disabled ? "确定要启用吗": '确定要禁用吗?', '提示', {
+			confirmButtonText: '确定',
+			cancelButtonText: '取消',
+			type: 'warning'
+		})
 		.then(() => {
 		axios.post('user/accountEnable', { id: row.id, enable: row.is_disabled }).then((response) => {
 			if (response.success) {
