@@ -2,10 +2,10 @@
     <div>
         <div>
             <div class="table-tools">
-                <el-button type="primary">新增地址</el-button>
+                <el-button type="primary" @click="createDeliveryAddress">新增地址</el-button>
             </div>
-            <el-table :data="addressData" style="width: 100%" border>
-                <el-form-item prop="id" label="" label-width="0px" />
+            <el-table :data="data" style="width: 100%" border>
+                <!-- <el-table-column prop="id" label="" width="0" /> -->
                 <el-table-column label="收件人" prop="name" width="280">
                     <template v-slot="scope" >
                         <el-tag v-if="scope.row.is_default" type="success" effect="dark">默认地址</el-tag>
@@ -17,7 +17,7 @@
                 <el-table-column label="操作" fix="right" width="260px">
                   <template v-slot="scope">
                     <el-button :disabled="scope.row.is_default" type="primary" plain @click="setDefaultAddress(scope.row.id)">设为默认</el-button>
-                    <el-button type="primary" plain @click="addressEdit(scope.row)">编辑</el-button>
+                    <el-button type="primary" plain @click="editDeliveryAddress(scope.row)">编辑</el-button>
                     <el-button type="danger" plain @click="deleteAddress(scope.row.id)">删除</el-button>
                   </template>
                 </el-table-column>
@@ -32,13 +32,13 @@
 				layout="total, prev, pager, next, jumper, sizes"
 			/>
         </div>
-        <el-dialog title="修改地址" v-model="dialogAddressVisible">
+        <el-dialog :title="displayDialogType === 'add' ? '新增收件地址' : '修改收件地址'" v-model="displayDialogStatus">
             <el-form :model="newAddressData">
                 <el-form-item label="所在地区:" label-width="120px">
                     <el-cascader
                             :options="options"
                             placeholder="请选择"
-                            v-model="addOptions">
+                            v-model="selectedRegionOptions">
                     </el-cascader>
                 </el-form-item>
                 <el-form-item label="详细地址:" label-width="120px">
@@ -55,7 +55,7 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogAddressVisible = false">取 消</el-button>
+                <el-button @click="displayDialogStatus = false">取 消</el-button>
                 <el-button type="primary" @click="saveAddress">确 定</el-button>
             </div>
         </el-dialog>
@@ -63,19 +63,19 @@
 </template>
 
 <script setup>
-    import { ref, reactive, onMounted, watch } from 'vue';
-	import axios from '@/common/request/axios';
+    import { ref, onMounted, watch } from 'vue';
     import { ElMessage, ElMessageBox } from 'element-plus';
+	import axios from '@/common/request/axios';
 
-    const addressData = ref([])
-    const page = ref(1)
-    const total = ref(0)
-    const infoForm = reactive({})
-    const dialogAddressVisible = ref(false)
-    const newAddressData = ref({})
-    const addOptions = ref([])
-    const options = ref([])
-	const PAGE_SIZES = [5, 50, 100, 200];
+    const PAGE_SIZES = [5, 50, 100, 200];
+    const data = ref([]);
+    const page = ref(1);
+    const total = ref(0);
+    const displayDialogStatus = ref(false);
+    const displayDialogType = ref("add"); // "add" | "edit"
+    const newAddressData = ref({});
+    const selectedRegionOptions = ref([]);
+    const options = ref([]);
 	const pageSize = ref(PAGE_SIZES[0]);
 
     // 定义入参
@@ -111,7 +111,7 @@
             size: pageSize.value,
         }).then((response) => {
             if (response.success) {
-                addressData.value = response.data.data;
+                data.value = response.data.data;
                 page.value = response.data.currentPage;
                 total.value = response.data.total;
             }
@@ -157,24 +157,39 @@
     }
 
     const saveAddress = () => {
-        newAddressData.value.addOptions = addOptions.value
-        axios.post('user/saveaddress', newAddressData.value)
-        .then((response) => {
-            if (response.success) {
-                alert('修改成功!')
-                addressData.value = []
-                getAddress()
-                dialogAddressVisible.value = false
-            } else {
-                alert('修改失败')
-            }
-        });
+        axios.post('user/saveAddress', {
+            ...newAddressData.value,
+            selectedRegionOptions: selectedRegionOptions.value,
+        })
+            .then((response) => {
+                if (response.success) {
+                    ElMessage({
+                        type: 'success',
+                        message: '修改成功'
+                    });
+                    getAddress()
+                    displayDialogStatus.value = false
+                } else {
+                    ElMessage({
+                        type: 'error',
+                        message: '修改失败'
+                    });
+                }
+            });
     }
 
-    const addressEdit = (item) => {
+    const editDeliveryAddress = (item) => {
         newAddressData.value = item;
-        addOptions.value = [item.province_id, item.city_id, item.district_id];
-        dialogAddressVisible.value = true;
+        selectedRegionOptions.value = [item.province_id, item.city_id, item.district_id];
+        displayDialogType.value = "edit";
+        displayDialogStatus.value = true;
+    }
+
+    const createDeliveryAddress = () => {
+        newAddressData.value = {user_id : props.id };
+        selectedRegionOptions.value = [];
+        displayDialogType.value = "add";
+        displayDialogStatus.value = true;
     }
 
     onMounted(() => {

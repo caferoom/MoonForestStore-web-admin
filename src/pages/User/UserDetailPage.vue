@@ -69,669 +69,96 @@
             <el-statistic :value="98500" suffix="件" />
         </el-card>
     </el-col>
-  </el-row>
-        <div class="content-main">
-            <el-tabs v-model="activeName">
-                <el-tab-pane label="订单" name="first"></el-tab-pane>
-                <el-tab-pane label="地址管理" name="second"></el-tab-pane>
-                <el-tab-pane label="购物车" name="third"></el-tab-pane>
-                <el-tab-pane label="足迹" name="fourth"></el-tab-pane>
-            </el-tabs>
-            <div class="form-table-box" v-if="activeName === 'first'">
-                <div v-for="item in orderData" class="list-wrap clearfix">
-                    <div class="header clearfix">
-                        <div class="status-text">{{item.order_status_text}}</div>
-                        <div class="add-time">{{item.add_time}}</div>
-                        <div class="order-id">订单号：{{item.order_sn}}</div>
-                        <div class="price-wrap">当前合计{{item.actual_price}}元（含运费{{item.freight_price}}元）</div>
-                        <div v-if="item.change_price!= item.actual_price" class="price-change">
-                            改价前{{item.change_price}}元
-                        </div>
-                        <div class="goods-num">共{{item.goodsCount}}件商品</div>
-                    </div>
-                    <div class="content-wrap clearfix">
-                        <div class="left">
-                            <div class="goods-list" v-for="iitem in item.goodsList">
-
-                                <img :src="iitem.list_pic_url" class="goods-img">
-                                <div class="goods-name">{{iitem.goods_name}}</div>
-                                <div class="goods-spec">{{iitem.goods_specifition_name_value}}</div>
-                                <div class="goods-number">数量：{{iitem.number}}</div>
-                                <div class="goods-number">¥{{iitem.retail_price}}</div>
-                            </div>
-                        </div>
-                        <div class="main">
-                            <div class="m1">
-                                <div class="user-name">{{item.consignee}}</div>
-                                <div class="user-mobile">{{item.mobile}}</div>
-                            </div>
-                            <div class="user-address">{{item.full_region}}{{item.address}}</div>
-                            <div class="user-post">{{item.postscript}}</div>
-                        </div>
-                        <div class="right">
-                            <el-button class="right-detail" type="text" @click="viewDetail(item.order_sn)"
-                                       size="mini">
-                                查看详情
-                            </el-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="address-wrap" v-if="activeName === 'second'">
-                <div class="coupon-w">
-                    <div class="top">
-                        <div class="l">
-                            <div class="f1" style="width: 100px;">收件人</div>
-                            <div class="f1" style="width: 100px;">手机</div>
-                            <div class="f1" style="width: 600px;">详细地址</div>
-                        </div>
-                        <div class="r">操作</div>
-                    </div>
-                    <div class="bottom" v-for="item in addressData">
-                        <div class="l">
-                            <div class="f1" style="width: 100px;">{{item.name}}</div>
-                            <div class="f1" style="width: 100px;">{{item.mobile}}</div>
-                            <div class="f1" style="width: 600px;">{{item.full_region}}</div>
-                        </div>
-                        <div class="r">
-                            <el-button size="small" @click="addressEdit(item)">编辑</el-button>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <AddressTable v-if="activeName === 'second'" :id="infoForm.id" />
-            <div class="form-table-box" v-if="activeName === 'third'">
-                <el-table :data="cartData" style="width: 100%" border stripe>
-                    <el-table-column prop="goods_id" label="商品ID" width="100px"></el-table-column>
-                    <el-table-column prop="list_pic_url" label="图片" width="70px">
-                        <template slot-scope="scope">
-                            <img :src="scope.row.list_pic_url" alt="" style="width: 50px;height: 50px">
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="goods_name" label="商品名称"></el-table-column>
-                    <el-table-column prop="goods_specifition_name_value" label="型号"></el-table-column>
-                    <el-table-column prop="number" label="数量" width="70px"></el-table-column>
-                    <el-table-column prop="retail_price" label="成交价"></el-table-column>
-                    <el-table-column prop="add_time" label="加入时间"></el-table-column>
-                    <el-table-column prop="is_delete" label="是否删除">
-                        <template slot-scope="scope">
-                            <label>{{scope.row.is_delete == 1? '已删':''}}</label>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <div class="form-table-box" v-if="activeName === 'fourth'">
-                <el-table :data="footData" style="width: 100%" stripe>
-                    <el-table-column prop="id" label="商品ID" width="100px"></el-table-column>
-                    <el-table-column prop="list_pic_url" label="图片" width="70px">
-                        <template slot-scope="scope">
-                            <img :src="scope.row.list_pic_url" alt="" style="width: 50px;height: 50px">
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="name" label="商品名称"></el-table-column>
-                </el-table>
-            </div>
-            <div class="page-box">
-                <el-pagination @current-change="handlePageChange" :current-page="page" :page-size="10"
-                               layout="total, prev, pager, next, jumper" :total="total">
-                </el-pagination>
-            </div>
-        </div>
-        <el-dialog title="修改地址" :visible.sync="dialogAddressVisible">
-            <el-form :model="nowAddressData">
-                <el-form-item label="所在地区:" label-width="120px">
-                    <el-cascader
-                            :options="options"
-                            placeholder="请选择"
-                            v-model="addOptions">
-                    </el-cascader>
-                </el-form-item>
-                <el-form-item label="详细地址:" label-width="120px">
-                    <el-input class="el-input" v-model="nowAddressData.address" auto-complete="off"
-                              placeholder="请输入详细地"></el-input>
-                </el-form-item>
-                <el-form-item label="收货人:" label-width="120px">
-                    <el-input class="el-input" v-model="nowAddressData.name" auto-complete="off"
-                              placeholder="请输入收货人"></el-input>
-                </el-form-item>
-                <el-form-item label="手机:" label-width="120px">
-                    <el-input class="el-input" v-model="nowAddressData.mobile" auto-complete="off"
-                              placeholder="请输入收货人手机"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogAddressVisible = false">取 消</el-button>
-                <el-button type="primary" @click="saveAddress">确 定</el-button>
-            </div>
-        </el-dialog>
+    </el-row>
+    <div>
+        <el-tabs v-model="activeName">
+            <el-tab-pane label="订单" name="first"></el-tab-pane>
+            <el-tab-pane label="地址管理" name="second"></el-tab-pane>
+            <el-tab-pane label="购物车" name="third"></el-tab-pane>
+            <el-tab-pane label="足迹" name="fourth"></el-tab-pane>
+        </el-tabs>
+        <OrderTable v-if="activeName === 'first'" :id="user_id" />
+        <AddressTable v-if="activeName === 'second'" :id="user_id" />
+        <shoppingCartTable v-if="activeName === 'third'" :id="user_id" />
+        <TrackTable v-if="activeName === 'fourth'" :id="user_id" />
+    </div>
     </div>
 </template>
 
-<script>
-import AddressTable from "./components/address";
+<script setup>
+    import { ref, onMounted } from "vue";
+    import { useRouter, useRoute } from "vue-router";
+    import AddressTable from "./components/address";
+    import OrderTable from "./components/order";
+    import shoppingCartTable from "./components/shoppingCart";
+    import TrackTable from "./components/track";
+    import axios from "axios"; // 确保正确引入 axios
+    import { ElMessage } from "element-plus"; // 确保引入 ElMessage
 
-export default {
-        data() {
-            return {
-                page: 1,
-                total: 0,
-                activeName: 'first',
-                num: 0,
-                infoForm: {
-                    id: 0
-                },
-                userData: [],
-                addressData: [],
-                cartData: [],
-                footData: [],
-                orderData: [],
-                dialogAddressVisible: false,
-                nowAddressData: {},
-                addOptions: [],
-                options: [],
-                dataInfo: {},
+    const router = useRouter();
+    const route = useRoute();
+
+    const activeName = ref("first");
+    const user_id = ref(Number(route.query.id || 0));
+    const dataInfo = ref({});
+
+    const onBack = () => {
+        router.go(-1);
+    };
+
+    const submitName = (index, row) => {
+        axios.post("user/updateName", { id: row.id, name: row.name }).then((response) => {
+            if (response.data.success) {
+            ElMessage({
+                type: "success",
+                message: "修改成功!",
+            });
+            } else {
+            ElMessage({
+                type: "error",
+                message: "修改失败",
+            });
             }
-        },
-        methods: {
-            onBack() {
-                this.$router.go(-1);
-            },
-            saveAddress() {
-                this.nowAddressData.addOptions = this.addOptions;
-                this.$axios.post('user/saveaddress', this.nowAddressData).then((response) => {
-                    if (response.success) {
-                        this.$message({
-                            type: 'success',
-                            message: '修改成功!'
-                        });
-                        this.addressData = [];
-                        this.getAddress();
-                        this.dialogAddressVisible = false;
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: '修改失败'
-                        })
-                    }
-                })
-            },
-            addressEdit(item) {
-                this.nowAddressData = item;
-                this.addOptions.push(
-                    item.province_id,
-                    item.city_id,
-                    item.district_id,
-                )
+        });
+    };
 
-                this.dialogAddressVisible = true
-            },
-            viewDetail(index) {
-                this.$router.push({name: 'order_detail', query: {order_sn: index}})
-            },
-            // submitNick(index, row) {
-            //     this.$axios.post('user/updateInfo', {id: row.id, nickname: row.nickname}).then((response) => {
+    const submitMobile = (index, row) => {
+        axios.post("user/updateMobile", { id: row.id, mobile: row.mobile }).then((response) => {
+            if (response.data.success) {
+            ElMessage({
+                type: "success",
+                message: "修改成功!",
+            });
+            } else {
+            ElMessage({
+                type: "error",
+                message: "修改失败",
+            });
+            }
+        });
+    };
 
-            //     })
-            // },
-            submitName(index, row) {
-                this.$axios.post('user/updateName', {id: row.id, name: row.name}).then((response) => {
-                    if (response.success) {
-                        this.$message({
-                            type: 'success',
-                            message: '修改成功!'
-                        });
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: '修改失败'
-                        })
-                    }
-                })
-            },
-            submitMobile(index, row) {
-                this.$axios.post('user/updateMobile', {id: row.id, mobile: row.mobile}).then((response) => {
-                    if (response.success) {
-                        this.$message({
-                            type: 'success',
-                            message: '修改成功!'
-                        });
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: '修改失败'
-                        })
-                    }
-                })
-            },
-            handlePageChange(val) {
-                this.page = val;
-                if (this.activeName === "first") {
-                    this.getOrder();
-                }
-                else if (this.activeName === "second") {
-                    this.getAddress();
-                }
-                else if (this.activeName === "third") {
-                    this.getCartData();
-                }
-                else if (this.activeName === "fourth") {
-                    this.getFootData();
-                }
-            },
-            datainfo() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-                let that = this;
-                this.$axios.get('user/datainfo', {
-                    params: {
-                        id: that.infoForm.id
-                    }
-                }).then((response) => {
-                    if (response.success) {
-                        this.dataInfo = response.data;
-                    }
-
-                })
-            },
-            getInfo() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-                let that = this;
-                this.$axios.get('user/info', {
-                    params: {
-                        id: that.infoForm.id
-                    }
-                }).then((response) => {
-                    if (response.success) {
-                        this.userData.push(response.data);
-                    }
-
-                })
-            },
-            getOrder() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-                let that = this;
-                this.$axios.get('user/order', {
-                    params: {
-                        id: that.infoForm.id,
-                        page: this.page,
-                    }
-                }).then((response) => {
-                    if (response.success) {
-                        this.orderData = response.data.data;
-                        this.page = response.data.currentPage;
-                        this.total = response.data.count
-                    }
-                })
-            },
-            getAddress() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-                let that = this;
-                this.$axios.get('user/address', {
-                    params: {
-                        id: that.infoForm.id,
-                        page: this.page,
-                    }
-                }).then((response) => {
-                    if (response.success) {
-                        this.addressData = response.data.data;
-                        this.page = response.data.currentPage;
-                        this.total = response.data.count;
-                    }
-                })
-
-            },
-            getCartData() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-                let that = this;
-                this.$axios.get('user/cartdata', {
-                    params: {
-                        id: that.infoForm.id,
-                        page: this.page,
-                    }
-                }).then((response) => {
-                    if (response.success) {
-                        this.cartData = response.data.data;
-                        this.page = response.data.currentPage;
-                        this.total = response.data.count;
-                    }
-
-                })
-            },
-            getFootData() {
-                if (this.infoForm.id <= 0) {
-                    return false
-                }
-                let that = this
-                this.$axios.get('user/foot', {
-                    params: {
-                        id: that.infoForm.id,
-                        page: this.page,
-                    }
-                }).then((response) => {
-                    if (response.success) {
-                        this.footData = response.data.data
-                        this.page = response.data.currentPage
-                        this.total = response.data.count
-                    }
-
-                })
-            },
-            getAllRegion() {
-                this.$axios.get('common/getAllRegion').then((response) => {
-                    if (response.success) {
-                        this.options = response.data;
-                    }
-                })
-            },
-        },
-        components: {
-            AddressTable,
-        },
-        mounted() {
-            this.infoForm.id = Number(this.$route.query.id || 0);
-            this.getInfo();
-            this.getOrder();
-            this.datainfo();
-            this.getAllRegion();
+    const datainfo = () => {
+        if (user_id.value <= 0) {
+            return false;
         }
-    }
+        axios
+            .get("user/datainfo", {
+            params: {
+                id: user_id.value,
+            },
+            })
+            .then((response) => {
+            if (response.data.success) {
+                dataInfo.value = response.data.data;
+            }
+            });
+    };
 
+    onMounted(() => {
+        datainfo();
+    });
 </script>
 
 <style>
-    .content-main {
-        margin-top: 100px;
-    }
-
-    .form-table-box {
-        margin-bottom: 20px;
-    }
-
-    .addr-w {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #f1f1f1;
-    }
-
-    .addr-w .l {
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .addr-w .l .f1 {
-        min-width: 100px;
-        height: 50px;
-        line-height: 50px;
-        font-size: 14px;
-        margin-right: 20px;
-    }
-
-    .addr-w .r {
-        min-width: 100px;
-        height: 50px;
-        line-height: 50px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    .coupon-w {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .coupon-w .top {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #f1f1f1;
-        color: #888;
-    }
-
-    .coupon-w .bottom {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #f1f1f1;
-
-    }
-
-    .coupon-w .l {
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .coupon-w .l .f1 {
-        min-width: 100px;
-        height: 50px;
-        line-height: 50px;
-        font-size: 14px;
-        margin-right: 20px;
-    }
-
-    .coupon-w .r {
-        min-width: 100px;
-        height: 50px;
-        line-height: 50px;
-        font-size: 14px;
-        text-align: center;
-    }
-
-    .list-wrap {
-        width: 100%;
-        border: 1px solid #dfe5ed;
-        margin-bottom: 10px;
-    }
-
-    .goods-img {
-        width: 40px;
-        height: 40px;
-    }
-
-    .list-wrap .header {
-        width: 100%;
-        height: 40px;
-        background-color: rgba(236, 245, 255, 0.51);
-        line-height: 40px;
-        color: #1f2d3d;
-        font-size: 13px;
-        padding: 0 10px;
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-
-    .status-text {
-        float: left;
-        color: #f0797f;
-        margin-right: 10px;
-    }
-
-    .add-time {
-        float: left;
-        margin-right: 20px;
-    }
-
-    .order-id {
-        float: left;
-    }
-
-    .goods-num {
-        float: right;
-        margin-right: 20px;
-    }
-
-    .price-wrap {
-        float: right;
-        margin-right: 20px;
-    }
-
-    .edit-wrap {
-        float: right;
-        margin-top: 5px;
-    }
-
-    .price-change {
-        float: right;
-        margin-right: 10px;
-        color: #e64242;
-    }
-
-    .content-wrap {
-        width: 100%;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .content-wrap .left {
-        width: 50%;
-        border-right: 1px solid #d1dbe5;
-        padding: 10px;
-    }
-
-    .content-wrap .main {
-        width: 40%;
-
-        border-right: 1px solid #d1dbe5;
-        padding: 20px 10px;
-    }
-
-    .content-wrap .right {
-        width: 10%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .right .right-detail {
-        margin-left: 0;
-        margin-top: 6px;
-    }
-
-    .goods-list {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    .goods-name {
-        color: #5e7382;
-        font-size: 14px;
-        margin-right: 20px;
-        width: 200px;
-    }
-
-    .goods-spec {
-        color: #0066cc;
-        font-size: 14px;
-        margin-right: 30px;
-    }
-
-    .goods-number {
-        color: #000000;
-        font-size: 14px;
-        margin-right: 20px;
-    }
-
-    .m1 {
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .user-name {
-        color: #000000;
-        font-size: 14px;
-        margin-right: 10px;
-        line-height: 20px;
-    }
-
-    .user-mobile {
-        color: #000000;
-        font-size: 14px;
-        line-height: 20px;
-        margin-right: 20px;
-    }
-
-    .user-address {
-        color: #333;
-        font-size: 13px;
-        line-height: 20px;
-    }
-
-    .user-post {
-        color: #333;
-        font-size: 14px;
-        line-height: 20px;
-        margin-top: 4px;
-        background-color: #e6e3b8;
-    }
-
-    .block-box {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .block-box .block {
-        display: flex;
-        justify-content: flex-start;
-        background: #fafafa;
-        align-items: center;
-        border: 1px solid #f1f1f1;
-        padding: 40px;
-        width: 24%;
-        box-sizing: border-box;
-        box-shadow: 1px 4px 4px #f1f1f1;
-    }
-
-    .block-box .a-block {
-        display: flex;
-        background: #fdf6ec;
-        flex-direction: column;
-        border: 1px solid #f1f1f1;
-        padding: 20px;
-        width: 160px;
-    }
-
-    .a-block .text {
-        font-size: 20px;
-    }
-
-    .a-block .time .label1 {
-        margin-right: 10px;
-    }
-
-    .a-block .time {
-        font-size: 12px;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    .block .text {
-        font-size: 14px;
-        color: #888;
-        margin-right: 10px;
-    }
-
-    .block .num {
-        color: #222;
-        font-size: 18px;
-    }
-
-    :global(h2#card-usage ~ .example .example-showcase) {
-  background-color: var(--el-fill-color) !important;
-}
-
-.el-statistic {
-  --el-statistic-content-font-size: 28px;
-}
-
 </style>
