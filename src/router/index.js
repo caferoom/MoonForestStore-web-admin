@@ -3,6 +3,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 export const workspaceBaseRoute = '/workspace';
 export const workSpaceRouteUrl = {
+  //商品管理
+  Categories: workspaceBaseRoute + "/categories", // 分类管理
+
   Dashboard: workspaceBaseRoute + "/dashboard", // 数据看板
   Order: workspaceBaseRoute + "/order", // 订单
   OrderDetail: workspaceBaseRoute + "/order/detail", // 订单详情
@@ -41,6 +44,18 @@ const routes = [
     path: workspaceBaseRoute,
     component: () => import("@/components/Layout"),
     children: [
+      // 商品管理
+      {
+        path: workSpaceRouteUrl.Categories,
+        name: "goods_categories",
+        component: () => import("@/pages/Categories"),
+      },
+      {
+        path: workSpaceRouteUrl.CategoryAdd,
+        name: "category_add",
+        component: () => import("@/pages/Category/CategoryAddPage"),
+      },
+
       {
         path: workSpaceRouteUrl.Dashboard,
         name: "dashboard",

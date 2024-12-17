@@ -189,7 +189,7 @@
 				page.value = response.data.currentPage
 				total.value = response.data.total
 			}
-			})
+		})
 	};
 
 	onMounted(() => {

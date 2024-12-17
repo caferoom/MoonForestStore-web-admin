@@ -197,7 +197,7 @@
                 });
             },
             getList() {
-                this.$axios.get('category', {
+                this.$axios.get('category/all', {
                     params: {
                         page: this.page,
                     }

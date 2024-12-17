@@ -72,7 +72,6 @@
 </template>
 
 <script>
-
     export default {
         data() {
             return {
@@ -129,8 +128,7 @@
                     type: 'warning'
                 }).then(() => {
 
-                    this.$axios.post('category/destory', {id: row.id}).then((response) => {
-                        console.log(response.data)
+                    axios.post('category/destory', {id: row.id}).then((response) => {
                         if (response.data.errno === 0) {
                             this.$message({
                                 type: 'success',

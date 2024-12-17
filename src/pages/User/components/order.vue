@@ -4,10 +4,10 @@
             <template v-slot="scope">
                 <div class="goods-list" v-for="iitem in scope.row.goodsList">
                     <img :src="iitem.list_pic_url" class="goods-img">
-                    <div class="goods-name">{{iitem.goods_name}}</div>
-                    <div class="goods-spec">{{iitem.goods_specifition_name_value}}</div>
-                    <div class="goods-number">数量：{{iitem.number}}</div>
-                    <div class="goods-number">¥{{iitem.retail_price}}</div>
+                    <span class="goods-name">{{iitem.goods_name}}</span>
+                    <span class="goods-spec">{{iitem.goods_specifition_name_value}}</span>
+                    <span class="goods-number">数量：{{iitem.number}}</span>
+                    <span class="goods-number">¥{{iitem.retail_price}}</span>
                 </div>
             </template>
         </el-table-column>
@@ -97,4 +97,14 @@
 </script>
 
 <style>
+  .goods-list {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .goods-img {
+    height: 100px;
+  }
+
 </style>

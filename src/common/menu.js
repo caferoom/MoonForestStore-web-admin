@@ -21,6 +21,10 @@ export const workspaceMenuTree = [{
     path: "goodsMgr",
     children: [
       {
+        title: "分类管理",
+        path: workSpaceRouteUrl.Categories,
+      },
+      {
         title: "商品列表",
         path: workSpaceRouteUrl.Goods,
       }, {
